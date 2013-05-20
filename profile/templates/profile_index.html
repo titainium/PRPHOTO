@@ -1,0 +1,67 @@
+{% extends "profile_base.html" %}
+{% block extraCSS %}
+<link rel=stylesheet type=text/css href="../../static/css/custom/prphoto_profile.css">
+{% endblock %}
+{% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
+{% block tabHeader %}
+<div class="container">
+  <ul class="nav nav-tabs" id="profile_tab_header">
+    <li class="active">
+      <a href="#base_info" data-toggle="tab">Base Info</a>
+      </li>
+    <!--li>
+      <a href="#person_setting" data-toggle="tab">Person Settings</a>
+    </li-->
+  </ul>
+</div>
+{% endblock %}
+{% block tabContent %}
+<div class="container">
+  <form action="/myprofile" method="POST">
+  <div class="tab-content">
+    <div class="tab-pane active" id="base_info">
+      <table>
+        <tr>
+          <td><span class="label">Nick Name</span>&nbsp;&nbsp;</td>
+          <td class="profile_info">{{ profile['NickName'] }}</td>
+          <td>
+            &nbsp;&nbsp;
+            <a href="#" id="edit_nickname">edit</a>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="label">Email</span>&nbsp;&nbsp;</td>
+          <td class="profile_info">{{ user['UserName'] }}</td>
+          <td>
+            &nbsp;&nbsp;
+            <button type="submit" class="btn">Click!</button>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="label">Password</span>&nbsp;&nbsp;</td>
+          <td class="profile_info">{{ user['Password'] | password }}</td>
+          <td>
+            &nbsp;&nbsp;
+            <button type="submit" class="btn">Click!</button>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="label">Location</span>&nbsp;&nbsp;</td>
+          <td class="profile_info">{{ profile['Location'] }}</td>
+          <td>
+            &nbsp;&nbsp;
+            <button type="submit" class="btn">Click!</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!--div class="tab-pane" id="person_setting">...</div-->
+  </div>
+  </form>
+</div> <!-- /container -->
+{% endblock %}
+{% block extraJS %}
+<script src="../../static/js/jquery-validate.min.js"></script>
+<script src="../../static/js/custom/prphoto_showFlash.js"></script>
+<script src="../../static/js/custom/prphoto_profile.js"></script>
+{% endblock %}

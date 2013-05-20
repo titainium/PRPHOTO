@@ -1,0 +1,27 @@
+$(document).ready(function(){
+    $(".form-signin").validate({
+        $.validateExtend({
+				email : {
+					required : true,
+					conditional : function(value) {
+					    if (pattern.test(value)){
+					        return "true";
+					    } else {
+					        return "false";
+					    }
+					},
+					pattern : /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/
+				}
+			});
+			
+        description: {
+            email: {
+                required: '<div class="alert alert-error">The email address format is not correct</div>'
+            },
+            
+            password: {
+                required: '<div class="alert alert-error">The password is mandatory, the password can be characters, numbers and symbols.</div>'
+            }
+        }
+    });
+});

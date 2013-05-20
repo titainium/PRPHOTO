@@ -1,0 +1,21 @@
+.fullBg {
+	left: 0;
+	top: 0;
+	overflow: hidden;
+	position: fixed;
+}
+
+.navbar {
+    filter: alpha(opacity=50);
+    opacity: 0.5;
+}
+
+.ad_words {
+	filter: alpha(opacity=20);
+	left: 5%;
+	opacity: 0.2;
+    position: absolute;
+	top: 40%;
+	width: 50%;
+	z-index: 50;
+}
