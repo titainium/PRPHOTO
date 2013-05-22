@@ -1,7 +1,0 @@
-#profile_tab_header {
-  margin: 75px auto;
-}
-
-#base_info td {
-  text-align: right;
-}
