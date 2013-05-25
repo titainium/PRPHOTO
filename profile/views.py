@@ -38,24 +38,23 @@ def my_profile():
 
 def update_profile(**kw):
     try:
-        profile = Profile.get_profile(session['userID'])
-        user = User.get_user_by_id(session['userID'])
+        profile_keys = ['nick_name',
+                        'location',
+                        ]
+        user_keys = ['name',
+                     'password'
+                     ]
+        val = None
         
-        if 'nick_name' in kw and kw['nick_name']:
-            pass
-    
-        if request.method == 'POST' and form.validate():
-            if User.searchByName({"UserName": form.user_name.data}) != 0:
-                flash("The email address has registered.")
-            else:
-                user = User(form.user_name.data, form.password.data)
-                
-                user.save()
-                flash("Thank you for your registration! Please log in.")
-                
-                return redirect('/')
-
-        return render_template('register.html', form = form)
+        for key in profile_keys:
+            if key in kw.keys() and kw[key]:
+                val = Profile.update(key, kw[key], session['userID'])
+        
+        for key in user_keys:
+            if key in kw.keys() and kw[key]:
+                val = User.update(key, kw[key], session['userID'])
+        
+        return val
     except:
         traceback.print_exc()
 
