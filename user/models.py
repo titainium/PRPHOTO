@@ -13,12 +13,12 @@ class User:
     
     def save(self):
         #FIXME here may be a bug -> can a username duplicated?
-        # if the answer is No, here we should create a unique index with UserName
+        # if the answer is No, here we should create a unique index with username
         # if the answer is Yes, why to allow this...
         mongo.db.users.insert(
             {
-                "UserName": self.name,
-                "Password": bcrypt.generate_password_hash(self.password),
+                "username": self.name,
+                "password": bcrypt.generate_password_hash(self.password),
             },
             safe=True,
         )
@@ -26,10 +26,10 @@ class User:
     @classmethod
     def search_by_name(cls, name):
         '''
-            search users collection by UserName column
+            search users collection by username column
             @name => target user
         '''
-        return mongo.db.users.find_one({'UserName': name}) or {}
+        return mongo.db.users.find_one({'username': name}) or {}
 
     
     @classmethod
@@ -40,10 +40,10 @@ class User:
             @password => target user's password
         '''
         flag = False
-        user = mongo.db.users.find_one({'UserName': name}) or {}
+        user = mongo.db.users.find_one({'username': name}) or {}
 
         if all([
-            user.get('UserName', "") == name,
+            user.get('username', "") == name,
             bcrypt.check_password_hash(user.get("Password", ""), password),
         ]):
             flag = True
@@ -58,7 +58,7 @@ class User:
             @password => target user's password
         '''
         return mongo.db.users.find_one({
-            'UserName': name,
+            'username': name,
             'Password': bcrypt.generate_password_hash(password),
         }) or {}
     
@@ -75,5 +75,23 @@ class User:
         return mongo.db.users.find_one({'_id': user_id}) or {}
 
     def get_user_id(self):
-        return mongo.db.users.find_one({'UserName': self.name}).get('_id')
+        return mongo.db.users.find_one({'username': self.name}).get('_id')
 
+    @classmethod
+    def update_user_password(cls, username, password):
+        '''
+            update the given user's password.
+            @username => the target username
+            @password => the new password
+        '''
+        return mongo.db.users.update(
+            {
+                'username': username,
+            },
+            {
+                "$set": {
+                    'password': bcrypt.generate_password_hash(password),
+                }
+            },
+            safe=True,
+        )
