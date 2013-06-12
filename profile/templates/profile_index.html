@@ -17,32 +17,28 @@
 {% endblock %}
 {% block tabContent %}
 <div class="container">
-  <form action="/myprofile" method="POST">
   <div class="tab-content">
     <div class="tab-pane active" id="base_info">
       <table>
         <tr>
           <td><span class="label">Nick Name</span>&nbsp;&nbsp;</td>
           <td class="profile_info">{{ profile['NickName'] }}</td>
-          <td>
+          <td id="btn_nickname">
             &nbsp;&nbsp;
             <a href="#" id="edit_nickname">edit</a>
           </td>
         </tr>
         <tr>
           <td><span class="label">Email</span>&nbsp;&nbsp;</td>
-          <td class="profile_info">{{ user.name }}</td>
-          <td>
-            &nbsp;&nbsp;
-            <button type="submit" class="btn">Click!</button>
-          </td>
+          <td class="profile_info">{{ user['username'] }}</td>
+          <td>&nbsp;&nbsp;</td>
         </tr>
         <tr>
           <td><span class="label">Password</span>&nbsp;&nbsp;</td>
-          <td class="profile_info">{{ user['Password'] | password }}</td>
+          <td class="profile_info">{{ user['password'] | password }}</td>
           <td>
             &nbsp;&nbsp;
-            <button type="submit" class="btn">Click!</button>
+            <a href="#" id="edit_password">edit</a>
           </td>
         </tr>
         <tr>
@@ -50,14 +46,13 @@
           <td class="profile_info">{{ profile['Location'] }}</td>
           <td>
             &nbsp;&nbsp;
-            <button type="submit" class="btn">Click!</button>
+            <a href="#" id="edit_location">edit</a>
           </td>
         </tr>
       </table>
     </div>
     <!--div class="tab-pane" id="person_setting">...</div-->
   </div>
-  </form>
 </div> <!-- /container -->
 {% endblock %}
 {% block extraJS %}

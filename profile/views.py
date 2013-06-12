@@ -7,6 +7,7 @@ from flask import Blueprint
 from flask import abort
 from flask import flash
 from flask import g
+from flask import jsonify
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -26,8 +27,8 @@ profile = Blueprint('profile', __name__, template_folder = 'templates')
 @login_required
 def my_profile():
     try:
-        profile = Profile.get_profile(session['userID'])
-        user = User.get_user_by_id(session['userID'])
+        profile = Profile.get_profile(session['user_id'])
+        user = User.get_user_by_id(session['user_id'])
         
         return render_template('profile_index.html',
                                profile = profile,
@@ -36,25 +37,27 @@ def my_profile():
     except:
         traceback.print_exc()
 
-def update_profile(**kw):
+@profile.route('/update_profile', methods=['POST'])
+def update_profile():
+    """
+    Update the user profile and return the updated value
+    """
     try:
-        profile_keys = ['nick_name',
-                        'location',
-                        ]
-        user_keys = ['name',
-                     'password'
-                     ]
-        val = None
+        profile_params = {'nick_name': None,
+                          'location': None,
+                          'user_id': session['user_id']
+                         }
+        back_val = ''
         
-        for key in profile_keys:
-            if key in kw.keys() and kw[key]:
-                val = Profile.update(key, kw[key], session['userID'])
+        print 'x' * 20, '\n', request.args
+        for key in profile_params.keys():
+          profile_params[key] = request.args.get(key)
+          back_val = request.args.get(key)
         
-        for key in user_keys:
-            if key in kw.keys() and kw[key]:
-                val = User.update(key, kw[key], session['userID'])
+        profile = Profile(**profile_params)
+        profile.save()
         
-        return val
+        return back_val
     except:
         traceback.print_exc()
 

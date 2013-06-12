@@ -39,7 +39,7 @@ def register():
         form = RegisterForm()
     
         if request.method == 'POST' and form.validate():
-            if User.search_by_name({"UserName": form.user_name.data}) != 0:
+            if User.search_by_name({"username": form.user_name.data}):
                 flash("The email address has registered.")
             else:
                 user = User(form.user_name.data, form.password.data)
@@ -61,7 +61,7 @@ def login():
         if User.check_user(form.user_name.data, form.password.data):
             user = User(form.user_name.data, form.password.data)
             g.user = user
-            session['userID'] = user.get_user_id()
+            session['user_id'] = user.get_user_id()
             flash("Logged in!")
             
             return redirect(request.args.get("next") or '/myprofile')
@@ -74,7 +74,7 @@ def login():
 @login_required
 def logout():
     g.user = None
-    session.pop('userID', None)
+    session.pop('user_id', None)
     flash("Logged out.")
     
     return redirect(url_for(".index"))
