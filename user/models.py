@@ -43,12 +43,15 @@ class User:
         user = mongo.db.users.find_one({'username': name}) or {}
         
         if not user:
+            print '*' * 20
             flag = False
         elif all([
             user.get('username', "") == name,
             bcrypt.check_password_hash(user.get("password", ""), password),
         ]):
             flag = True
+        else:
+            flag = False
         
         return flag
     

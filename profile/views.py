@@ -49,9 +49,9 @@ def update_profile():
                          }
         back_val = ''
         
-        print 'x' * 20, '\n', request.args
+        print 'x' * 20, '\n', request.form.getlist('nick_name')
         for key in profile_params.keys():
-          profile_params[key] = request.args.get(key)
+          profile_params[key] = request.form.getlist(key)
           back_val = request.args.get(key)
         
         profile = Profile(**profile_params)
