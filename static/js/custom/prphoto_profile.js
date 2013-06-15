@@ -3,7 +3,7 @@ $(document).ready(function(){
       var cell = $(this).parents('tr').children('td');
       var nick_name = cell.eq(1).text();
       cell.eq(1).html("<input type='text' id='nick_name' class='span2' name='nick_name' value='" + nick_name + "' />");
-      cell.eq(2).html("<a href='#' id='submit_nickname'>save</a>");
+      cell.eq(2).html("&nbsp;&nbsp;<a href='#' id='submit_nickname'>save</a>");
     });
     
     $("#btn_nickname").delegate("a", "click", function() {

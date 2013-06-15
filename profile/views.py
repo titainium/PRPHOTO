@@ -48,14 +48,16 @@ def update_profile():
                           'user_id': session['user_id']
                          }
         back_val = ''
-        
-        print 'x' * 20, '\n', request.form.getlist('nick_name')
         for key in profile_params.keys():
-          profile_params[key] = request.form.getlist(key)
-          back_val = request.args.get(key)
+            if request.form.has_key(key):
+                profile_params[key] = request.form.getlist(key)[0]
+                back_val = request.form.getlist(key)[0]
+                print 'x' * 20, '\n', request.form.getlist(key)
         
         profile = Profile(**profile_params)
         profile.save()
+        
+        print '*' * 20, '\n', back_val
         
         return back_val
     except:
