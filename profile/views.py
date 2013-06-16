@@ -52,12 +52,9 @@ def update_profile():
             if request.form.has_key(key):
                 profile_params[key] = request.form.getlist(key)[0]
                 back_val = request.form.getlist(key)[0]
-                print 'x' * 20, '\n', request.form.getlist(key)
         
         profile = Profile(**profile_params)
         profile.save()
-        
-        print '*' * 20, '\n', back_val
         
         return back_val
     except:
