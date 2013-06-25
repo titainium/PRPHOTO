@@ -21,6 +21,7 @@ class Profile(object):
 
         # init the query_dict for query record
         if self.user_id is not None:
+            #query_dict.update({'_id': self.user_id})
             query_dict.update({'_id': ObjectId(self.user_id)})
 
         if self.username is not None:

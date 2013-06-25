@@ -39,7 +39,7 @@ class User:
             @name => target user
             @password => target user's password
         '''
-        #flag = False
+        flag = False
         user = mongo.db.users.find_one({'username': name}) or {}
         
         if not user:

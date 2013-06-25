@@ -55,6 +55,9 @@ def register():
 
 @user.route('/login', methods = ['GET', 'POST'])
 def login():
+    """
+    login method, add user_id into session.
+    """
     form = LoginForm()
     
     if request.method == 'POST' and form.validate():
