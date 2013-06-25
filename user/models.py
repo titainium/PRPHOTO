@@ -80,7 +80,7 @@ class User:
         return mongo.db.users.find_one({'username': self.name}).get('_id')
 
     @classmethod
-    def update_user_password(cls, username, password):
+    def reset_user_password(cls, username, password):
         '''
             update the given user's password.
             @username => the target username
@@ -97,3 +97,25 @@ class User:
             },
             safe=True,
         )
+
+    @classmethod
+    def update_user_password(cls, user_id=None, username=None, password=None):
+        '''
+            update uesr password.
+        '''
+        query_dict = {}
+        if user_id:
+            query_dict.update({'_id': user_id})
+        if username:
+            query_dict.update({'username': username})
+
+        if query_dict:
+            return mongo.db.users.update(
+                query_dict,
+                {
+                    "$set": {
+                        'password': bcrypt.generate_password_hash(password),
+                    }
+                },
+                safe=True,
+            )
