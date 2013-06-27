@@ -35,4 +35,28 @@ $(document).ready(function(){
              }
             );
     });
+    
+    $("#btn_password").delegate("#edit_password", "click", function(){
+      var cell = $("#btn_password").parents('tr').children('td');
+      var password = cell.eq(1).text();
+      cell.eq(1).html("<input type='password' id='password' class='span2' name='password' value='" + password + "' />");
+      cell.eq(2).html("&nbsp;&nbsp;&nbsp;<a href='#' id='submit_password'>save</a>");
+    });
+    
+    $("#btn_password").delegate("#submit_password", "click", function() {
+      $('#password-modal').modal('show');
+    });
+    
+    $(".save-password").click(function(){
+      var cell = $("#btn_password").parents('tr').children('td');
+      $.post("/update_user",
+             {password: $("#password").val()},
+             function(data) {
+               cell.eq(1).html(data);
+               cell.eq(2).html("&nbsp;&nbsp;&nbsp;<a href='#' id='edit_password'>edit</a>");
+             }
+            );
+    });
+    
+    $('#password-modal').modal('hide');
 });
