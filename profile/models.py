@@ -33,11 +33,14 @@ class Profile(object):
             mongo.db.users.update(
                 query_dict,
                 {"$set": {
-                    "nick_name": self.nick_name,
-                    "location": self.location,
+                    'profile': {
+                        "nick_name": self.nick_name,
+                        "location": self.location,
+                    },
                 }},
                 safe=True,
             )
+
 
     @classmethod
     def get_profile(cls, user_id=None, username=None):
@@ -59,3 +62,12 @@ class Profile(object):
             result = mongo.db.users.find_one(query_dict) or {}
 
         return result
+
+    @classmethod
+    def update_profile(cls, user_id, **kwargs):
+        ''' update user_id by given args '''
+        return mongo.db.users.update(
+            {'_id': ObjectId(user_id)},
+            {"$set": kwargs},
+            save=True,
+        )
