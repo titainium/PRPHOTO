@@ -36,7 +36,7 @@
         <tr>
           <td><span class="label">Password</span>&nbsp;&nbsp;</td>
           <td class="profile_info">{{ user['password'] | password }}</td>
-          <td>
+          <td id="btn_password">
             &nbsp;&nbsp;
             <a href="#" id="edit_password">edit</a>
           </td>
@@ -54,6 +54,17 @@
     <!--div class="tab-pane" id="person_setting">...</div-->
   </div>
 </div> <!-- /container -->
+{% endblock %}
+{% block passwordHint %}
+<div class="modal hide fade" id="password-modal">
+  <div class="modal-body">
+    <p>Sure to change the password?</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn">Close</a>
+    <a href="#" class="btn btn-primary save-password" data-dismiss="modal" aria-hidden="true">Save</a>
+  </div>
+</div>
 {% endblock %}
 {% block extraJS %}
 <script src="../../static/js/jquery-validate.min.js"></script>

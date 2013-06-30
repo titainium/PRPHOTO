@@ -19,6 +19,7 @@ from jinja2 import TemplateNotFound
 
 from .models import Profile
 from user.models import User
+from utils.const import PASSWORD_KEYWORD
 from utils.login import login_required
 
 profile = Blueprint('profile', __name__, template_folder = 'templates')
@@ -43,13 +44,13 @@ def update_profile():
     Update the user profile and return the updated value
     """
     try:
-        profile_params = {'nick_name': None,
-                          'location': None,
-                          'user_id': session['user_id']
-                         }
+        update_keys = ['nick_name',
+                       'location',
+                       ]
+        profile_params = {'user_id': session['user_id'],}
         back_val = ''
-        for key in profile_params.keys():
-            if request.form.has_key(key):
+        for key in update_keys:
+            if request.form.has_key(key) and request.form.getlist(key)[0] != '':
                 profile_params[key] = request.form.getlist(key)[0]
                 back_val = request.form.getlist(key)[0]
         
@@ -60,28 +61,20 @@ def update_profile():
     except:
         traceback.print_exc()
 
-"""@user.route('/login', methods = ['GET', 'POST'])
-def login():
-    form = LoginForm()
-    
-    if request.method == 'POST' and form.validate():
-        if User.checkUser(form.user_name.data, form.password.data):
-            user = User(form.user_name.data, form.password.data)
-            g.user = user
-            session['userID'] = user.getUserID()
-            flash("Logged in!")
-            
-            return redirect(request.args.get("next") or url_for(".index"))
-        else:
-            flash("Sorry, but you could not log in.")
-    
-    return render_template('index.html', form = form)
-
-@user.route("/logout")
-@login_required
-def logout():
-    g.user = None
-    session.pop('userID', None)
-    flash("Logged out.")
-    
-    return redirect(url_for(".index"))"""
+@profile.route('/update_user', methods=['POST'])
+def update_user():
+    """
+    Update the user's password
+    """
+    try:
+        back_val = {}
+        if request.form.has_key(PASSWORD_KEYWORD):
+            back_val = User.update_user_password(user_id = session['user_id'], password = request.form.getlist(PASSWORD_KEYWORD)[0])
+        
+        if back_val and not back_val['err']:
+            return_val = request.form.getlist(PASSWORD_KEYWORD)[0]
+        
+        
+        return len(return_val) * '*'
+    except:
+        traceback.print_exc()
