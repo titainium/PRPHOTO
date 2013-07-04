@@ -73,6 +73,6 @@ class Profile(object):
 
         return mongo.db.users.update(
             {'_id': ObjectId(user_id)},
-            {"$set": {'profile': kwargs}},
+            {"$set": {'profile': cur_profile}},
             save=True,
         )
