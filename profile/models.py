@@ -65,8 +65,14 @@ class Profile(object):
     @classmethod
     def update_profile(cls, user_id, **kwargs):
         ''' update user_id by given args '''
+        cur_profile = mongo.db.users.find_one(
+            {'_id': ObjectId(user_id)}
+        ).get('profile', {})
+
+        cur_profile.update(kwargs)
+
         return mongo.db.users.update(
             {'_id': ObjectId(user_id)},
-            {"$set": kwargs},
+            {"$set": {'profile': kwargs}},
             save=True,
         )
