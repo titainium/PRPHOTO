@@ -14,6 +14,7 @@ from flask import request
 from flask import session
 from flask import url_for
 
+from bson import ObjectId
 from flaskext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
@@ -29,7 +30,7 @@ profile = Blueprint('profile', __name__, template_folder = 'templates')
 def my_profile():
     try:
         profile = Profile.get_profile(session['user_id'])
-        user = User.get_user_by_id(session['user_id'])
+        user = User.get_user_by_id(ObjectId(session['user_id']))
         
         return render_template('profile_index.html',
                                profile = profile,
@@ -47,15 +48,15 @@ def update_profile():
         update_keys = ['nick_name',
                        'location',
                        ]
-        profile_params = {'user_id': session['user_id'],}
+        #profile_params = {'user_id': session['user_id'],}
         back_val = ''
         for key in update_keys:
-            if request.form.has_key(key) and request.form.getlist(key)[0] != '':
-                profile_params[key] = request.form.getlist(key)[0]
+            if request.form.has_key(key):
+                back_val = Profile.update_profile(session['user_id'], **{key: request.form.getlist(key)[0]})
                 back_val = request.form.getlist(key)[0]
         
-        profile = Profile(**profile_params)
-        profile.save()
+        #profile = Profile(**profile_params)
+        #profile.save()
         
         return back_val
     except:
@@ -69,7 +70,7 @@ def update_user():
     try:
         back_val = {}
         if request.form.has_key(PASSWORD_KEYWORD):
-            back_val = User.update_user_password(user_id = session['user_id'], password = request.form.getlist(PASSWORD_KEYWORD)[0])
+            back_val = User.update_user_password(user_id = ObjectId(session['user_id']), password = request.form.getlist(PASSWORD_KEYWORD)[0])
         
         if back_val and not back_val['err']:
             return_val = request.form.getlist(PASSWORD_KEYWORD)[0]

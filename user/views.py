@@ -58,25 +58,30 @@ def login():
     """
     login method, add user_id into session.
     """
-    form = LoginForm()
+    try:
+      form = LoginForm()
     
-    if request.method == 'POST' and form.validate():
-        if User.check_user(form.user_name.data, form.password.data):
-            user = User(form.user_name.data, form.password.data)
-            g.user = user
-            session['user_id'] = user.get_user_id()
-            flash("Logged in!")
-            
-            return redirect(request.args.get("next") or '/myprofile')
-        else:
-            flash("Sorry, but you could not log in.")
-    
-    return render_template('user_index.html', form = form)
+      if request.method == 'POST' and form.validate():
+	  if User.check_user(form.user_name.data, form.password.data):
+	      user = User(form.user_name.data, form.password.data)
+	      #g.user = user
+	      #print '*' * 20, '\n', user.get_user_id(), '\t', str(user.get_user_id())
+	      session['user_id'] = str(user.get_user_id())
+	      
+	      flash("Logged in!")
+	      
+	      return redirect(request.args.get("next") or '/myprofile')
+	  else:
+	      flash("Sorry, but you could not log in.")
+      
+      return render_template('user_index.html', form = form)
+    except:
+      traceback.print_exc()
 
 @user.route("/logout")
 @login_required
 def logout():
-    g.user = None
+    #g.user = None
     session.pop('user_id', None)
     flash("Logged out.")
     
