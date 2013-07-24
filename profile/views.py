@@ -21,6 +21,7 @@ from jinja2 import TemplateNotFound
 from .models import Profile
 from user.models import User
 from utils.const import PASSWORD_KEYWORD
+from utils.const import USER_KEY
 from utils.login import login_required
 
 profile = Blueprint('profile', __name__, template_folder = 'templates')
@@ -29,12 +30,21 @@ profile = Blueprint('profile', __name__, template_folder = 'templates')
 @login_required
 def my_profile():
     try:
-        profile = Profile.get_profile(session['user_id'])
+        #profile = Profile.get_profile(session['user_id'])
         user = User.get_user_by_id(ObjectId(session['user_id']))
         
+        if user.has_key(USER_KEY):
+	  nick_name = user[USER_KEY]['nick_name']
+	  location = user[USER_KEY]['location']
+	else:
+	  nick_name = ''
+	  location = ''
+        
         return render_template('profile_index.html',
-                               profile = profile,
-                               user = user
+                               #profile = profile,
+                               user = user,
+                               nick_name = nick_name,
+                               location = location
                                )
     except:
         traceback.print_exc()
