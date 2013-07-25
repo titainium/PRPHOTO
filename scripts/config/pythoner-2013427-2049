@@ -1,0 +1,33 @@
+server {
+    listen   80;
+    server_name pythoner.net www.pythoner.net;
+    access_log /var/log/nginx/pythoner_access.log ;
+    error_log  /var/log/nginx/pythoner_error.log ;
+
+    location / {
+            root /www/pythoner ;
+            include uwsgi_params;
+            uwsgi_pass unix:///var/run/pythoner.sock;
+
+    }
+
+    location /main/api/{
+            allow 127.0.0.1;
+            allow 58.24.246.122;
+            allow 116.231.210.173;
+            deny all;
+
+            root /www/pythoner ;
+            include uwsgi_params;
+            uwsgi_pass unix:///var/run/pythoner.sock;
+
+    }
+
+    location /static/ {
+            root /www/pythoner/;
+            expires 24h;
+            access_log   off;
+    }
+
+}
+

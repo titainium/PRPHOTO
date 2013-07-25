@@ -1,0 +1,9 @@
+Flask
+pymongo
+babel
+bcrypt
+Flask-Babel
+Flask-Bcrypt
+Flask-Pymongo
+Flask-WTF
+
