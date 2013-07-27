@@ -7,4 +7,3 @@ Flask-Bcrypt
 Flask-Pymongo
 Flask-WTF
 
-mongoengine==0.8.3
