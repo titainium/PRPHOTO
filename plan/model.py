@@ -7,26 +7,22 @@ Implements plan's model
 """
 
 from datetime import datetime
-from mongoengine import *
 
 __all__ = ['Plan']
 
-class Plan(Document):
-    master_id       = StringField()
-    member_ids      = ListField(StringField())
-    performer_ids   = ListField(StringField())
-    name            = StringField()
-    starts_at       = DateTimeField(default=datetime.now)
-    ends_at         = DateTimeField()
-    location        = StringField()
-    equipments      = ListField(StringField())
-    is_publick      = BooleanField(default=True)
+class Plan(object):
+
+    master_id       = '' 
+    member_ids      = []
+    performer_ids   = []
+    name            = ''
+    starts_at       = datetime.now()
+    ends_at         = datetime.now()
+    location        = ''
+    equipments      = []
+    is_public       = True
 
 
 if __name__ == '__main__':
-    connect(host='localhost',db='test')
-    p = Plan()
-    p.save()
-    print 'id',p.id
     pass
 
