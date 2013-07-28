@@ -22,7 +22,24 @@ class Plan(object):
     equipments      = []
     is_public       = True
 
+    def __init__(self):
+        pass
+
+    def save(self):
+        pass
+
+    
+    @staticmethod
+    def get_detail(self,pid):
+        """ detail for plan
+
+        :param pid: ObjectId 
+        :return: a dict or None
+        """
+        pass
+
 
 if __name__ == '__main__':
+    p = Plan()
     pass
 
