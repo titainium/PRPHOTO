@@ -17,6 +17,6 @@ run commend:
 run commend:
 
 ```
-. scripts/setupenv.sh
+. scripts/env.sh
 
 ```
