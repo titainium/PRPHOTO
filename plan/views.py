@@ -33,7 +33,7 @@ plan = Blueprint('plan', __name__, template_folder = 'templates')
 
 @plan.route('/plan',methods=['GET'])
 def plan_listing():
-    return render_template('plan_index.html',locals())
+    return render_template('plan_index.html')
 
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
