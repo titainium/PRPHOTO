@@ -8,7 +8,7 @@
 run commend:
   
 ```
-. scripts/setupenv.sh
+cd scripts && . setupenv.sh
 
 ```
 
@@ -17,6 +17,6 @@ run commend:
 run commend:
 
 ```
-. scripts/env.sh
+cd scripts && env.sh
 
 ```
