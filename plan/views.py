@@ -35,6 +35,12 @@ plan = Blueprint('plan', __name__, template_folder = 'templates')
 def plan_listing():
     return render_template('plan_index.html')
 
+
+@plan.route('/plan/add', methods=['POST'])
+@login_required
+def plan_add():
+    return render_template('plan_detail.html',locals())
+
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
     # mock
@@ -44,9 +50,3 @@ def plan_detail(pid):
     if plan:
         return render_template('plan_detail.html',locals())
     abort(404)
-
-@plan.route('/plan/add', methods=['POST'])
-@login_required
-def plan_add():
-    return render_template('plan_detail.html',locals())
-

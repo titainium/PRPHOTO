@@ -35,7 +35,7 @@ def my_profile():
         
         if user.has_key(USER_KEY):
 	  nick_name = user[USER_KEY]['nick_name']
-	  location = user[USER_KEY]['location']
+	  location = user[USER_KEY].get('location','unknow')
 	else:
 	  nick_name = ''
 	  location = ''
