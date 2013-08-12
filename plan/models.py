@@ -7,27 +7,25 @@ Implements plan's model
 """
 
 from datetime import datetime
+from prphoto import mongo
 
 __all__ = ['Plan']
 
 class Plan(object):
-
-    master_id       = '' 
+    initiator_ids   = []
+    master_ids      = []
     member_ids      = []
-    performer_ids   = []
-    name            = ''
+    tags            = []
+    equipments      = ''
+    title           = ''
+    description     = ''
     starts_at       = datetime.now()
-    ends_at         = datetime.now()
+    ends_at         = None
     location        = ''
-    equipments      = []
     is_public       = True
 
     def __init__(self):
         pass
-
-    def save(self):
-        pass
-
     
     @staticmethod
     def get_detail(self, pid):
@@ -39,7 +37,7 @@ class Plan(object):
         """
         return mongo.db.plan.find_one({'_id': pid}) or {}
 
-    def save(self, plan_id, **kwargs):
+    def save(self, plan_id=None, **kwargs):
         '''
             save the given plan
 
@@ -48,8 +46,12 @@ class Plan(object):
 
             :return: result of saving data by pymongo
         '''
-        kwargs.update({'_id': plan_id})
-        return mongo.db.plan.save(kwargs)
+        is_new = plan_id is None
+        if is_new:
+            return mongo.db.plan.insert(kwargs)
+        else:
+            kwargs.update({'_id': plan_id})
+            return mongo.db.plan.save(kwargs)
 
 
 if __name__ == '__main__':

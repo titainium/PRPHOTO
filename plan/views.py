@@ -36,9 +36,10 @@ def plan_listing():
     return render_template('plan_index.html')
 
 
-@plan.route('/plan/add', methods=['POST'])
+@plan.route('/plan/add', methods=['POST','GET'])
 @login_required
 def plan_add():
+    form = PlanForm()
     return render_template('plan_detail.html',locals())
 
 @plan.route('/plan/<pid>', methods=['GET'])
