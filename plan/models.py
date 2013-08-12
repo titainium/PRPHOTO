@@ -30,13 +30,26 @@ class Plan(object):
 
     
     @staticmethod
-    def get_detail(self,pid):
-        """ detail for plan
-
-        :param pid: ObjectId 
-        :return: a dict or None
+    def get_detail(self, pid):
         """
-        pass
+            detail for plan
+
+            :param pid: ObjectId 
+            :return: a dict or {} (when there is no such record)
+        """
+        return mongo.db.plan.find_one({'_id': pid}) or {}
+
+    def save(self, plan_id, **kwargs):
+        '''
+            save the given plan
+
+            :param plan_id: ObjectId
+            :kwargs: the other input data
+
+            :return: result of saving data by pymongo
+        '''
+        kwargs.update({'_id': plan_id})
+        return mongo.db.plan.save(kwargs)
 
 
 if __name__ == '__main__':
