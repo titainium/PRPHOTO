@@ -53,6 +53,27 @@ class Plan(object):
             kwargs.update({'_id': plan_id})
             return mongo.db.plan.save(kwargs)
 
+    def get_plans(self):
+        '''
+            get whole plans
+
+            :return: plan list
+        '''
+        return mongo.db.plan.find()
+
+
+    def get_plans_by_public(self, is_public=True):
+        '''
+            get plans by is_public
+
+            :param is_public: boolean
+            :return: plan list with checking is_public
+        '''
+        return filter(
+            lambda x: x.get('is_public', False) == is_public,
+            self.get_plans()
+        )
+
 
 if __name__ == '__main__':
     p = Plan()
