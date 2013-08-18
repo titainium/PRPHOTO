@@ -1,13 +1,73 @@
 {% extends "plan_base.html" %}
 {% block extraCSS %}
+<link rel=stylesheet type=text/css href="../../static/css/jquery.tagsinput.css">
 <link rel=stylesheet type=text/css href="../../static/css/custom/prphoto_plan.css">
 {% endblock %}
 {% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
 {% block timeline %}
-<div class="hero-unit jetstrap-highlighted"><div class="well"><div class="control-group"><label class="control-label">Text</label><div class="controls"><input type="text"></div></div><div class="control-group"><label class="control-label">Text</label><div class="controls"><input type="text"></div></div></div><button type="submit" class="btn">Click!</button></div>
+<div class="container">
+<form class="plan_add" method="POST" action="/plan/save">
+  <div class="hero-unit" id="title">
+    <span class="badge">Badge</span>
+    <div class="well">
+      <div class="control-group">
+	<label class="control-label">Project Title</label>
+	<div class="controls"><input type="text" nme="title"></div>
+      </div>
+      <div class="control-group">
+	<label class="control-label">Tags</label>
+	<div class="controls"><input type="text" name="tags" id="tags"></div>
+      </div>
+    </div>
+    <button type="submit" class="btn">Click!</button>
+  </div>
+  <div class="hero-unit" id="member">
+    <span class="badge">Badge</span>
+    <div class="well">
+      <div class="control-group">
+	<label class="control-label">Project Title</label>
+	<div class="controls"><input type="text" nme="title"></div>
+      </div>
+      <div class="control-group">
+	<label class="control-label">Tags</label>
+	<div class="controls"><input type="text" name="tags" id="tags"></div>
+      </div>
+    </div>
+    <button type="submit" class="btn">Click!</button>
+  </div>
+  <div class="hero-unit" id="description">
+    <span class="badge">Badge</span>
+    <div class="well">
+      <div class="control-group">
+	<label class="control-label">Project Title</label>
+	<div class="controls"><input type="text" nme="title"></div>
+      </div>
+      <div class="control-group">
+	<label class="control-label">Tags</label>
+	<div class="controls"><input type="text" name="tags" id="tags"></div>
+      </div>
+    </div>
+    <button type="submit" class="btn">Click!</button>
+  </div>
+  <div class="hero-unit" id="misc">
+    <span class="badge">Badge</span>
+    <div class="well">
+      <div class="control-group">
+	<label class="control-label">Project Title</label>
+	<div class="controls"><input type="text" nme="title"></div>
+      </div>
+      <div class="control-group">
+	<label class="control-label">Tags</label>
+	<div class="controls"><input type="text" name="tags" id="tags"></div>
+      </div>
+    </div>
+    <button type="submit" class="btn">Click!</button>
+  </div>
+</form>
+</div>
 {% endblock %}
 {% block extraJS %}
 <script src="../../static/js/jquery-validate.min.js"></script>
-<script src="../../static/js/custom/prphoto_showFlash.js"></script>
-<script src="../../static/js/custom/prphoto_profile.js"></script>
+<script src="../../static/js/jquery.tagsinput.min.js"></script>
+<script src="../../static/js/custom/prphoto_plan.js"></script>
 {% endblock %}
