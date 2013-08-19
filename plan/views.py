@@ -39,8 +39,18 @@ def plan_listing():
 @plan.route('/plan/add', methods=['POST','GET'])
 @login_required
 def plan_add():
-    form = PlanForm()
-    return render_template('plan_detail.html',locals())
+    if request.method == 'GET':
+        return render_template('plan_add.html',**locals())
+    
+    # clear data
+    data = request.form.to_dict()
+    if Plan.validate(data):
+        cleared_data = Plan.clear_data(data)
+        res  = Plan().save(cleared_data)
+        # return a detail  page about this record when successed
+        return str(res)
+    else:
+        pass
 
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):

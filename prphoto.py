@@ -8,8 +8,8 @@ import os
 
 from flask import Flask
 from flask import send_from_directory
-from flaskext.babel import Babel
-from flaskext.bcrypt import Bcrypt
+from flask.ext.babel import Babel
+from flask.ext.bcrypt import Bcrypt
 from flask.ext.pymongo import PyMongo
 
 from utils import filters

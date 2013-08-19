@@ -1,4 +1,6 @@
 #!/bin/bash
+apt-get install -y python-setuptools
+apt-get install -y  libffi-dev
 easy_install pip
 pip install virtualenvwrapper
 

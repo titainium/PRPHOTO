@@ -60,6 +60,33 @@ class Plan(object):
             :return: plan list
         '''
         return mongo.db.plan.find()
+    
+    @staticmethod
+    def validate(data):
+        """ Validate  data that submitted from user
+        """
+        # required fields
+        for field in ['title']:
+            if not data.has_key(field):
+                return False
+        # TODO
+        return True
+
+    @staticmethod
+    def clear_data(data):
+        """ clear data
+
+        :param data: a dict object
+        :return : a dict object be cleared
+        """
+        print 'data',data,type(data)
+        # convert string to list
+        for key in ['tags']:
+            data[key] = data[key].split(',')
+
+        # some others
+        # TODO
+        return data
 
 
     def get_plans_by_public(self, is_public=True):

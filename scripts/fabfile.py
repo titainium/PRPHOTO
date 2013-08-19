@@ -18,12 +18,12 @@ from fabric.operations import get,put
 from fabric.contrib.files import  exists
 today = time.strftime("%Y-%m-%d-%H%M", time.localtime())
 
-env.name            = 'prphoto'
+env.name            = 'PRPHOTO'
 env.hosts           = ['linode.t-y.me']
 env.user            = 'ubuntu'
 env.path            = '/srv/{}'.format(env.name)
 env.nginx_conf      = '/usr/local/nginx/conf/vhost/{}'.format(env.name)
-env.repositories    = 'git@github.com:titainium/PRPHOTO.git'
+env.repositories    = 'https://github.com/titainium/PRPHOTO.git'
 env.db_name         = env.name
 
 def dump_db():
@@ -76,10 +76,10 @@ def sync_code(tag=None):
 def init():
     with mode_sudo():
         if not exists('/srv/'):
-            run('mkdir /srv/')
+            run('sudo mkdir /srv/')
         with cd('/srv/'):
             try:
-                run('git clone %s' %env.repositories)
+                run('sudo git clone %s' %env.repositories)
             except:
                 pass
 
