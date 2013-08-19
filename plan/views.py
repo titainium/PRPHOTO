@@ -44,20 +44,31 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
-    if Plan.validate(data):
+    validated,message = Plan.validate(data)
+    if validated:
+        new_id = ObjectId()
         cleared_data = Plan.clear_data(data)
-        res  = Plan().save(cleared_data)
-        # return a detail  page about this record when successed
+        res  = Plan().save(new_id,cleared_data)
+        if res:
+            return redirect('/plan/{}'.format(str(new_id)))
         return str(res)
     else:
-        pass
+        flash('error',message)
+        return render_template('plan_add.html',**data)
 
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
     # mock
-    Plan = mock.Mock()
     pid = ObjectId(pid)
     plan = Plan.get_detail(pid)
+    return str(plan)
     if plan:
         return render_template('plan_detail.html',locals())
+    
     abort(404)
+
+
+
+if __name__ == '__main__':
+     with plan.test_request_context():
+         print url_for('plan_add')

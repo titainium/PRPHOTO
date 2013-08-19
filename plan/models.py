@@ -28,7 +28,7 @@ class Plan(object):
         pass
     
     @staticmethod
-    def get_detail(self, pid):
+    def get_detail(pid):
         """
             detail for plan
 
@@ -37,7 +37,7 @@ class Plan(object):
         """
         return mongo.db.plan.find_one({'_id': pid}) or {}
 
-    def save(self, plan_id=None, **kwargs):
+    def save(self, plan_id=None, data=None):
         '''
             save the given plan
 
@@ -48,10 +48,10 @@ class Plan(object):
         '''
         is_new = plan_id is None
         if is_new:
-            return mongo.db.plan.insert(kwargs)
+            return mongo.db.plan.insert(data)
         else:
-            kwargs.update({'_id': plan_id})
-            return mongo.db.plan.save(kwargs)
+            data.update({'_id':plan_id})
+            return mongo.db.plan.save(data)
 
     def get_plans(self):
         '''
@@ -64,13 +64,13 @@ class Plan(object):
     @staticmethod
     def validate(data):
         """ Validate  data that submitted from user
+        :return: result,message
         """
         # required fields
-        for field in ['title']:
-            if not data.has_key(field):
-                return False
-        # TODO
-        return True
+        for field in ['title','tags']:
+            if not data.get(field):
+                return False,'field {} is required'.format(field)
+        return True,'success'
 
     @staticmethod
     def clear_data(data):
@@ -79,7 +79,6 @@ class Plan(object):
         :param data: a dict object
         :return : a dict object be cleared
         """
-        print 'data',data,type(data)
         # convert string to list
         for key in ['tags']:
             data[key] = data[key].split(',')
@@ -87,7 +86,6 @@ class Plan(object):
         # some others
         # TODO
         return data
-
 
     def get_plans_by_public(self, is_public=True):
         '''
