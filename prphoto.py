@@ -47,4 +47,4 @@ if __name__ == '__main__':
         app.register_blueprint(plan)
 
     register_blueprints(app)
-    app.run()
+    app.run(host='localhost',port=8002)

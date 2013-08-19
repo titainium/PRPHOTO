@@ -7,4 +7,5 @@ Flask-Babel
 Flask-Bcrypt
 Flask-Pymongo
 Flask-WTF
+fabric
 
