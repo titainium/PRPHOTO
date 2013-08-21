@@ -76,3 +76,16 @@ class Profile(object):
             {"$set": {'profile': cur_profile}},
             save=True,
         )
+
+    @classmethod
+    def check_exists(cls, nick_name):
+        '''
+            check the given nick name existed.
+
+            input:
+                @nick_name -> target nick_name
+            output:
+                if the given nick_name existed return true, else false.
+        '''
+        tmp_record = mongo.db.users.find_one({'profile.nick_name': nick_name})
+        return True if tmp_record else False
