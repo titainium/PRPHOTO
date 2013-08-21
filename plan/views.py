@@ -20,7 +20,7 @@ from flask import session
 from flask import url_for
 
 from bson import ObjectId
-from flaskext.babel import gettext as _
+from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
 from .models import Plan
@@ -39,15 +39,36 @@ def plan_listing():
 @plan.route('/plan/add', methods=['POST','GET'])
 @login_required
 def plan_add():
-    form = PlanForm()
-    return render_template('plan_detail.html',locals())
+    if request.method == 'GET':
+        return render_template('plan_add.html',**locals())
+    
+    # clear data
+    data = request.form.to_dict()
+    validated,message = Plan.validate(data)
+    if validated:
+        new_id = ObjectId()
+        cleared_data = Plan.clear_data(data)
+        res  = Plan().save(new_id,cleared_data)
+        if res:
+            return redirect('/plan/{}'.format(str(new_id)))
+        return str(res)
+    else:
+        flash('error',message)
+        return render_template('plan_add.html',**data)
 
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
     # mock
-    Plan = mock.Mock()
     pid = ObjectId(pid)
     plan = Plan.get_detail(pid)
+    return str(plan)
     if plan:
         return render_template('plan_detail.html',locals())
+    
     abort(404)
+
+
+
+if __name__ == '__main__':
+     with plan.test_request_context():
+         print url_for('plan_add')

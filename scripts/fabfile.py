@@ -1,98 +1,99 @@
 #encoding:utf-8
-import datetime
+"""
+author:tianyu0915@gmail.com
+version:1.2
+datetime:2013-08-19
+
+"""
+import time
+from datetime import datetime
+import requests
 import sys
 import os
+from cuisine import *
 from fabric.api import *
-#from cuisine import *
+from cuisine import *
 from fabric.contrib.project import rsync_project, upload_project
 from fabric.operations import get,put
 from fabric.contrib.files import  exists
-d = datetime.datetime.today()
-today = '{0}{1}{2}-{3}{4}'.format(d.year,d.month,d.day,d.hour,d.minute)
-print today
+today = time.strftime("%Y-%m-%d-%H%M", time.localtime())
 
-env.hosts = ['pythoner.net']
-env.user = 'root'
-path = '/home/pythoner.net'
+env.name            = 'PRPHOTO'
+env.hosts           = ['linode.t-y.me']
+env.user            = 'ubuntu'
+env.path            = '/srv/{}'.format(env.name)
+env.nginx_conf      = '/usr/local/nginx/conf/vhost/{}'.format(env.name)
+env.repositories    = 'https://github.com/titainium/PRPHOTO.git'
+env.db_name         = env.name
 
-def mysqldump():
-    today = '{0}{1}{2}{3}'.format(d.year,d.month,d.day,d.hour)
-    dbs = ['pythoner_db']
-    for db in dbs:
-        file_name = "{0}_{1}.sql".format(db,today)
-        if not exists('/tmp/{0}'.format(file_name)):
-            run("mysqldump -hlocalhost -uroot  %s> /tmp/%s" %(db,file_name))
+def dump_db():
+    tar_name = '{}.dump.{}.tar'.format(env.db_name,time.strftime("%Y-%m-%d-%H", time.localtime()))
+    tar_fp  = os.path.join('/tmp/',tar_name)
+    if not exists(tar_fp):
+        with cd('/tmp'):
+            run('rm -rf {}.dump*'.format(evn.db_name))
+            run('mongodump -d {} -o buzz.dump'.format(env.db_name))
+            run('tar -czvf {} {}.dump'.format(tar_name,env.db_name))
 
-        with cd('/tmp/'):
-            if not exists('{0}.tar'.format(file_name)):
-                run('tar -czvf {0}.tar {0}'.format(file_name))
-            get('/tmp/{0}.tar'.format(file_name),'~/Dev/vps/sqls/')
-            run('rm -rf pythoner*.sql')
-            run('rm -rf pythoner*.tar')
-
-def mysqlrestore():
-    dbs = ['pythoner_db']
-    for host in env.hosts:
-        for db in dbs:
-            local("scp -rC %s.sql %s@%s:~/" %(db,env.user,host))
-
-    #with run('mysql'):
-    #    run('source ~/s.sql;')
+    get(tar_fp,'backup/')
+    run('rm -rf /tmp/{}.dump*'.format(env.db_name))
 
 def restart():
-    """ restart the pythoner uwsgi & nginx """
+    """ restart the uwsgi & nginx """
+    with mode_sudo():
+        run('rm -rf /tmp/{}.log'.format(env.name))
+        with cd(env.path):
+            run('sudo rm -rf cache/*')
         
-    with cd(path):
-        run('rm -rf pythoner/cache/*')
-        with cd('scripts'):
-            run('. env.sh')
-            run('. uwsgi.sh')
-            run('nginx -s reload')
+        for tname in ['buzz','buzz-taksk']:
+            run('sudo supervisorctl restart {}'.format(tname))
+
+        run('sudo nginx -s reload')
+        run('ps -ef |grep {}'.format(env.name))
+        run('tail /tmp/{}.log'.format(env.name))
 
 def sync_code(tag=None):
-    get('/etc/nginx/conf.d/pythoner','config/pythoner-{0}'.format(today))
-    put('config/pythoner','/etc/nginx/conf.d/pythoner')
-    with cd(path):
-        run('git checkout -- .')
-        run('git checkout production')
-        run('git pull origin production')
-        if tag:
-            run('git checkout {0}'.format(tag))
-        else:
-            run('git branch {0}'.format(today))
-            run('git checkout {0}'.format(today))
 
-    get('/www/pythoner/settings.py','config/settings-{0}.py'.format(today))
-    put('../pythoner/settings.py','/www/pythoner/settings.py')
+    # backup nginx config
+    with mode_sudo():
+        if exists(env.nginx_conf):
+            get(env.nginx_conf,'backup/{}.nginx-{}'.format(env.name,today))
+        put('config/%s' %env.name,env.nginx_conf)
 
-def sync_sitemap():
-    if exists('/www/pythoner/static/sitemap.html'):
-        get('/www/pythoner/static/sitemap.xml','config/sitemap-{0}.xml'.format(today))
-    put('config/sitemap.xml','/www/pythoner/static/sitemap.xml')
-
-def migrate(app=None):
-    with cd(env.path):
-        with cd('pythoner'):
-            if app:
-                run('python manage.py  migrate {0}'.format(app))
+        with cd(env.path):
+            run('sudo git checkout -- .')
+            run('sudo git pull origin master')
+            if tag:
+                run('sudo git fetch --tags')
+                run('sudo git checkout {0}'.format(tag))
             else:
-                run('python manage.py migrate')
-        
-def setup():
-    if not exists('/www/pythoner'):
-        run('mkdir /www/')
-        with cd('/www/'):
-            run('ln -s /home/pythoner.net/pythoner .')
+                try:
+                    run('sudo git branch {0}'.format(today))
+                except:
+                    pass
+                run('sudo git checkout {0}'.format(today))
 
-    with cd(path):
-        with cd('scripts'):
-            run('source setupenv.sh')
+def init():
+    with mode_sudo():
+        if not exists('/srv/'):
+            run('sudo mkdir /srv/')
+        with cd('/srv/'):
+            try:
+                run('sudo git clone %s' %env.repositories)
+            except:
+                pass
+
+def setup():
+    with mode_sudo():
+        if not exists(env.path):
+            init()
+        
+        with cd(env.path):
+            with cd('scripts'):
+                run('sudo sh setupenv.sh')
 
 def deploy():
     sync_code()
     setup()
-    migrate()
     restart()
-
-
 

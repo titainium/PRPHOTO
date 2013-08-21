@@ -13,7 +13,7 @@ from flask import request
 from flask import session
 from flask import url_for
 
-from flaskext.babel import gettext as _
+from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
 from .forms import LoginForm

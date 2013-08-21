@@ -15,7 +15,7 @@ from flask import session
 from flask import url_for
 
 from bson import ObjectId
-from flaskext.babel import gettext as _
+from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
 from .models import Profile
