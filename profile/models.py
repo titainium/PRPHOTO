@@ -85,7 +85,7 @@ class Profile(object):
             input:
                 @nick_name -> target nick_name
             output:
-                if the given nick_name existed return record, else false.
+                if the given nick_name existed return record, else empty dict.
         '''
         tmp_record = mongo.db.users.find_one({'profile.nick_name': nick_name})
-        return tmp_record if tmp_record else False
+        return tmp_record if tmp_record else {}
