@@ -24,6 +24,7 @@ from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
 from .models import Plan
+from profile.models import Profile
 from user.models import User
 from utils.const import PASSWORD_KEYWORD
 from utils.const import USER_KEY
@@ -67,7 +68,11 @@ def plan_detail(pid):
     
     abort(404)
 
-
+@plan.route('/plan/check_user/<nick_name>', methods=['POST'])
+def check_user(nick_name):
+    user = Profile.check_exist(nick_name)
+    
+    return user
 
 if __name__ == '__main__':
      with plan.test_request_context():
