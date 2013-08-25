@@ -2,6 +2,7 @@
 {% block extraCSS %}
 <link rel=stylesheet type=text/css href="../../static/css/jquery.tagsinput.css">
 <link rel=stylesheet type=text/css href="../../static/css/custom/prphoto_plan.css">
+<link rel=stylesheet type=text/css href="../../static/css/ui-lightness/jquery-ui-1.10.3.custom.min.css">
 {% endblock %}
 {% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
 {% block timeline %}
@@ -26,7 +27,9 @@
     <div class="well">
       <div class="control-group">
 	<label class="control-label">Initiators</label>
-	<div class="controls"><input type="text" name="initiators"></div>
+	<div class="controls">
+            <input type="text" name="initiators" id="initiators">
+        </div>
       </div>
       <div class="control-group">
 	<label class="control-label">Masters</label>
@@ -71,5 +74,6 @@
 {% block extraJS %}
 <script src="../../static/js/jquery-validate.min.js"></script>
 <script src="../../static/js/jquery.tagsinput.min.js"></script>
+<script src="../../static/js/jquery-ui-1.10.3.custom.min.js"></script>
 <script src="../../static/js/custom/prphoto_plan.js"></script>
 {% endblock %}
