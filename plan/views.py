@@ -68,9 +68,14 @@ def plan_detail(pid):
     
     abort(404)
 
-@plan.route('/plan/check_user/<nick_name>', methods=['POST'])
-def check_user(nick_name):
-    user = Profile.check_exist(nick_name)
+@plan.route('/plan/check_user', methods=['POST'])
+def check_user():
+    """
+    the user auto complete ajax function.
+    """
+    user = Profile.check_exists(request.form.getlist('nick_name')[0])
+    
+    print '*' * 20, '\n', user
     
     return user
 

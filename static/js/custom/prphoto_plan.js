@@ -4,19 +4,19 @@ $(document).ready(function(){
     $("#initiators").autocomplete({
         autoFocus: true,
         source: function(request, response){
-            $.ajax(type: 'POST',
-                   url: '/plan/check_user',
+            $.ajax({type: "POST",
+                   url: "/plan/check_user",
                    data: {nick_name: $("#initiators").val()},
-                   contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                   dataType: 'json',
-                   success: function(result){
-                       response($.map(result, function(user){
-                           if (user.length > 0) {
-                               return user['nick_name'];
-                        }
-                    }));
-                },
-            );
-        }
+                          contentType: "application/x-www-form-urlencoded;charset=UTF-8",
+                          dataType: "json",
+                          success: function(result){
+                            response($.map(result, function(user){
+                                if (user.length > 0) {
+                                    return user.length;
+                                }
+                            }));
+                          },
+                   });
+            },
     });
 });
