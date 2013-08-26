@@ -11,9 +11,7 @@ $(document).ready(function(){
                           dataType: "json",
                           success: function(result){
                             response($.map(result, function(user){
-                                if (user.length > 0) {
-                                    return user.length;
-                                }
+                                return user
                             }));
                           },
                    });

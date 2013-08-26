@@ -75,9 +75,11 @@ def check_user():
     """
     user = Profile.check_exists(request.form.getlist('nick_name')[0])
     
-    print '*' * 20, '\n', user
-    
-    return user
+    if user:
+        print '*' * 20, '\n', user['profile']['nick_name']
+        return jsonify(user['profile']['nick_name'])
+    else:
+        return jsonify('')
 
 if __name__ == '__main__':
      with plan.test_request_context():
