@@ -60,7 +60,7 @@ def plan_add():
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
     # mock
-    pid = ObjectId(pid)
+    #pid = ObjectId(pid)
     plan = Plan.get_detail(pid)
     return str(plan)
     if plan:
@@ -73,13 +73,13 @@ def check_user():
     """
     the user auto complete ajax function.
     """
+    print '*' * 20, '\n', request.form.getlist('nick_name')[0]
     user = Profile.check_exists(request.form.getlist('nick_name')[0])
     
     if user:
-        print '*' * 20, '\n', user['profile']['nick_name']
-        return jsonify(user['profile']['nick_name'])
+        return user['profile']['nick_name']
     else:
-        return jsonify('')
+        return ''
 
 if __name__ == '__main__':
      with plan.test_request_context():
