@@ -6,6 +6,7 @@ Implements plan's model
 
 """
 
+import json
 import traceback
 import mock
 from flask import Blueprint
@@ -68,18 +69,17 @@ def plan_detail(pid):
     
     abort(404)
 
-@plan.route('/plan/check_user', methods=['POST'])
+@plan.route('/plan/check_user', methods=['POST', 'GET'])
 def check_user():
     """
     the user auto complete ajax function.
     """
-    print '*' * 20, '\n', request.form.getlist('nick_name')[0]
-    user = Profile.check_exists(request.form.getlist('nick_name')[0])
+    user = Profile.check_exists(request.args.get('nick_name'))
     
     if user:
-        return user['profile']['nick_name']
+        return json.dumps([user['profile']['nick_name']])
     else:
-        return ''
+        return json.dumps([''])
 
 if __name__ == '__main__':
      with plan.test_request_context():

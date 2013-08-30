@@ -4,8 +4,11 @@ $(document).ready(function(){
     $("#initiators").marcoPolo({
         url: "/plan/check_user",
         param: "nick_name",
-        formatData: function(data){
-                          return data;
+        formatItem: function(data, $item) {
+            return data;
+        },
+        onSelect: function(data, $item) {
+            this.val(data);
         }
     });
 });
