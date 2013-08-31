@@ -89,3 +89,27 @@ class Profile(object):
         '''
         tmp_record = mongo.db.users.find_one({'profile.nick_name': nick_name})
         return True if tmp_record else False
+
+    @classmethod
+    def get_fuzzy_results(cls, nick_name=None, email=None):
+        '''
+            get the fuzzy results for given nick_name or email
+
+            input:
+                @nick_name -> target nick_name default to None
+                @email -> target email default to None
+            output:
+                the fuzzy results
+        '''
+
+        query_dict = {}
+        if nick_name:
+            query_dict.update({'profile.nick_name': {'$regex': nick_name}}) 
+
+        if email:
+            query_dict.update({'profile.email': {'$regex': nick_name}}) 
+
+        if query_dict:
+            return list(mongo.db.find(query_dict))
+        else:
+            return []
