@@ -11,4 +11,8 @@ $(document).ready(function(){
             this.val(data);
         }
     });
+    
+    $("#add-initiators").click(function(){
+        $("#initiator-lists").append("<span class='label'>" + $("#initiators").val() + "</span>");
+    });
 });

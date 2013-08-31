@@ -30,7 +30,6 @@ profile = Blueprint('profile', __name__, template_folder = 'templates')
 @login_required
 def my_profile():
     try:
-        #profile = Profile.get_profile(session['user_id'])
         user = User.get_user_by_id(ObjectId(session['user_id']))
         
         if user.has_key(USER_KEY):
@@ -41,7 +40,6 @@ def my_profile():
 	  location = ''
         
         return render_template('profile_index.html',
-                               #profile = profile,
                                user = user,
                                nick_name = nick_name,
                                location = location

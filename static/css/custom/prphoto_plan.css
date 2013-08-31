@@ -6,6 +6,10 @@
   text-align: right;
 }
 
+.initiators {
+    vertical-align: top;
+}
+
 /*input.mp_input {
   border: 1px solid #000000;
   font: inherit;
