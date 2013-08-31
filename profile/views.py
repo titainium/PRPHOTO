@@ -30,7 +30,6 @@ profile = Blueprint('profile', __name__, template_folder = 'templates')
 @login_required
 def my_profile():
     try:
-        #profile = Profile.get_profile(session['user_id'])
         user = User.get_user_by_id(ObjectId(session['user_id']))
         
         if user.has_key(USER_KEY):
@@ -41,7 +40,6 @@ def my_profile():
 	  location = ''
         
         return render_template('profile_index.html',
-                               #profile = profile,
                                user = user,
                                nick_name = nick_name,
                                location = location
@@ -58,15 +56,12 @@ def update_profile():
         update_keys = ['nick_name',
                        'location',
                        ]
-        #profile_params = {'user_id': session['user_id'],}
         back_val = ''
+        
         for key in update_keys:
             if request.form.has_key(key):
                 back_val = Profile.update_profile(session['user_id'], **{key: request.form.getlist(key)[0]})
                 back_val = request.form.getlist(key)[0]
-        
-        #profile = Profile(**profile_params)
-        #profile.save()
         
         return back_val
     except:

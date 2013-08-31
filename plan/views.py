@@ -6,6 +6,7 @@ Implements plan's model
 
 """
 
+import json
 import traceback
 import mock
 from flask import Blueprint
@@ -24,6 +25,7 @@ from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
 from .models import Plan
+from profile.models import Profile
 from user.models import User
 from utils.const import PASSWORD_KEYWORD
 from utils.const import USER_KEY
@@ -59,7 +61,7 @@ def plan_add():
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
     # mock
-    pid = ObjectId(pid)
+    #pid = ObjectId(pid)
     plan = Plan.get_detail(pid)
     return str(plan)
     if plan:
@@ -67,7 +69,17 @@ def plan_detail(pid):
     
     abort(404)
 
-
+@plan.route('/plan/check_user', methods=['POST', 'GET'])
+def check_user():
+    """
+    the user auto complete ajax function.
+    """
+    user = Profile.check_exists(request.args.get('nick_name'))
+    
+    if user:
+        return json.dumps([user['profile']['nick_name']])
+    else:
+        return json.dumps([''])
 
 if __name__ == '__main__':
      with plan.test_request_context():
