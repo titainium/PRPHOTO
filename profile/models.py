@@ -110,6 +110,6 @@ class Profile(object):
             query_dict.update({'profile.email': {'$regex': nick_name}}) 
 
         if query_dict:
-            return list(mongo.db.find(query_dict))
+            return list(mongo.db.users.find(query_dict))
         else:
             return []
