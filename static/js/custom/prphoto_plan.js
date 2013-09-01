@@ -13,6 +13,10 @@ $(document).ready(function(){
     });
     
     $("#add-initiators").click(function(){
-        $("#initiator-lists").append("<span class='label'>" + $("#initiators").val() + "</span>");
+        $("#initiator-lists").append("<span class='label initiators-list'>" + $("#initiators").val() + "</span>");
+    });
+    
+    $(".initiators-list").hover(function(){
+        $(this).css('text-decoration', 'line-through');
     });
 });

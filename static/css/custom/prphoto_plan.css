@@ -69,3 +69,6 @@ ol.mp_list li.mp_error {
 
 }
 
+.initiators-list :hover {
+    text-decoration: line-through;
+}

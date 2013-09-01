@@ -74,10 +74,10 @@ def check_user():
     """
     the user auto complete ajax function.
     """
-    user = Profile.check_exists(request.args.get('nick_name'))
+    users = Profile.get_fuzzy_results(request.args.get('nick_name'))
     
-    if user:
-        return json.dumps([user['profile']['nick_name']])
+    if users:
+        return json.dumps([user['profile']['nick_name'] for user in users])
     else:
         return json.dumps([''])
 
