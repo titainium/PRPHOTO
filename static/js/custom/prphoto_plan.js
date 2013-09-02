@@ -13,10 +13,18 @@ $(document).ready(function(){
     });
     
     $("#add-initiators").click(function(){
-        $("#initiator-lists").append("<span class='label initiators-list'>" + $("#initiators").val() + "</span>");
+        $("#initiator-lists").append("<span class='initiator-container'><span class='label initiator'>" + $("#initiators").val() + "</span>&nbsp;</span>");
     });
     
-    $(".initiators-list").hover(function(){
-        $(this).css('text-decoration', 'line-through');
+    $("#initiator-lists").delegate(".initiator", "mouseover", function(){
+        $(this).css("text-decoration", "line-through");
+    });
+    
+    $("#initiator-lists").delegate(".initiator", "mouseout", function(){
+        $(this).css("text-decoration", "none");
+    });
+    
+    $("#initiator-lists").delegate(".initiator-container", "click", function(){
+        $(this).remove();
     });
 });
