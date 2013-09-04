@@ -32,15 +32,30 @@
             <button type="button" class="btn initiators" id="add-initiators">Add</button>
             <br />
             <div id="initiator-lists"></div>
+            <input type="hidden" name="initiator-list" id="initiator-list" class="initiator-list" />
         </div>
       </div>
       <div class="control-group">
 	<label class="control-label">Masters</label>
-	<div class="controls"><input type="text" name="tags" id="masters" /></div>
+	<div class="controls">
+            <input type="text" name="masters" id="masters" class="masters" />
+            &nbsp;
+            <button type="button" class="btn masters" id="add-masters">Add</button>
+            <br />
+            <div id="master-lists"></div>
+            <input type="hidden" name="master-list" id="master-list" class="master-list" />
+        </div>
       </div>
       <div class="control-group">
         <label class="control-label">Members</label>
-        <div class="controls"><input type="text" name="tags" id="members" /></div>
+        <div class="controls">
+            <input type="text" name="members" id="members" />
+            &nbsp;
+            <button type="button" class="btn members" id="add-members">Add</button>
+            <br />
+            <div id="member-lists"></div>
+            <input type="hidden" name="member-list" id="member-list" class="member-list" />
+        </div>
       </div>
     </div>
     <button type="button" class="btn">Prev</button>&nbsp;
@@ -51,7 +66,7 @@
     <div class="well">
       <div class="control-group">
 	<label class="control-label">Description</label>
-	<div class="controls"><textarea rows="135" cols="85" nme="description"></textarea></div>
+	<div class="controls"><textarea rows="85" cols="135" nme="description"></textarea></div>
       </div>
     </div>
     <button type="button" class="btn">Prev</button>&nbsp;

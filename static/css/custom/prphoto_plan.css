@@ -6,7 +6,7 @@
   text-align: right;
 }
 
-.initiators {
+.initiators, .masters, .members {
     vertical-align: top;
 }
 
@@ -67,8 +67,4 @@ ol.mp_list li.mp_min_chars {
 /* When a request is made that fails during the ajax request. */
 ol.mp_list li.mp_error {
 
-}
-
-.initiators-list :hover {
-    text-decoration: line-through;
 }
