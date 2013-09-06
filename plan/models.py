@@ -23,6 +23,7 @@ class Plan(object):
     ends_at         = None
     location        = ''
     is_public       = True
+    status          = 'New' #total 4 status: New, Process, Done, Dropped
 
     def __init__(self):
         pass

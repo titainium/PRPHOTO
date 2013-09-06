@@ -138,4 +138,39 @@ $(document).ready(function(){
         $("#member-list").attr("value", sub_member + sub_next);
         $(this).remove();
     });
+    
+    $("#add-equipments").click(function(){
+        $("#equipment-lists").append("<span class='equipment-container'><span class='label equipment'>" + $("#equipments").val() + "</span>&nbsp;</span>");
+        var equipment = $("#equipment-list").val();
+        
+        if (equipment.length == 0) {
+            $("#equipment-list").attr("value", $("#equipments").val());
+        } else {
+            equipment += "," + $("#equipments").val();
+            $("#equipment-list").attr("value", equipment);
+        }
+    });
+    
+    $("#equipment-lists").delegate(".equipment", "mouseover", function(){
+        $(this).css("text-decoration", "line-through");
+    });
+    
+    $("#equipment-lists").delegate(".equipment", "mouseout", function(){
+        $(this).css("text-decoration", "none");
+    });
+    
+    $("#equipment-lists").delegate(".equipment-container", "click", function(){
+        var removed_equipment = $(this).text();
+        var removed_position = $("#equipment-list").val().indexOf(removed_equipment);
+        var sub_equipment = $("#equipment-list").val().substring(0, removed_position);
+        if ($("#equipment-list").val().indexOf(",") == -1) {
+            var sub_next = $("#equipment-list").val().substr(removed_position + removed_equipment.length);
+        } else if ($("#equipment-list").val().length == removed_position + removed_equipment.length) {
+            var sub_next = $("#equipment-list").val().substr(removed_position - 1 + removed_equipment.length);
+        } else {
+            var sub_next = $("#equipment-list").val().substr(removed_position + 1 + removed_equipment.length);
+        }
+        $("#equipment-list").attr("value", sub_equipment + sub_next);
+        $(this).remove();
+    });
 });
