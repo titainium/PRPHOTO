@@ -10,6 +10,19 @@
     vertical-align: top;
 }
 
+#description-cotent {
+    min-height: 500px;
+    width: 75%;
+}
+
+#title, #member, #description, #misc {
+    margin-top: 50px;
+}
+
+#member, #description, #misc {
+    display: none;
+}
+
 /*input.mp_input {
   border: 1px solid #000000;
   font: inherit;

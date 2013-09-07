@@ -173,4 +173,14 @@ $(document).ready(function(){
         $("#equipment-list").attr("value", sub_equipment + sub_next);
         $(this).remove();
     });
+    
+    $(":button").click(function(){
+        if ($(this).attr("value") == "next") {
+            $("#" + $(this).attr("prev")).slideUp();
+            $("#" + $(this).attr("next")).slideDown();
+        } else if ($(this).attr("value") == "prev") {
+            $("#" + $(this).attr("next")).slideUp();
+            $("#" + $(this).attr("prev")).slideDown();
+        }
+    });
 });

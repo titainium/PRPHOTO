@@ -19,7 +19,7 @@
 	<div class="controls"><input type="text" name="tags" id="tags" /></div>
       </div>
     </div>
-    <button type="button" class="btn">Next</button>
+    <button type="button" prev="title" next="member" value="next" class="btn">Next</button>
   </div>
   <div class="hero-unit" id="member">
     <span class="badge">Members</span>
@@ -58,19 +58,23 @@
         </div>
       </div>
     </div>
-    <button type="button" class="btn">Prev</button>&nbsp;
-    <button type="button" class="btn">Next</button>
+    <button type="button" prev="title" next="member" value="prev" class="btn">Prev</button>
+    &nbsp;
+    <button type="button" prev="member" next="description" value="next" class="btn">Next</button>
   </div>
   <div class="hero-unit" id="description">
     <span class="badge">Description</span>
     <div class="well">
       <div class="control-group">
 	<label class="control-label">Description</label>
-	<div class="controls"><textarea rows="85" cols="135" nme="description"></textarea></div>
+	<div class="controls">
+            <textarea id="description-cotent" nme="description"></textarea>
+        </div>
       </div>
     </div>
-    <button type="button" class="btn">Prev</button>&nbsp;
-    <button type="button" class="btn">Next</button>
+    <button type="button" prev="member" next="description" value="prev" class="btn">Prev</button>
+    &nbsp;
+    <button type="button" prev="description" next="misc" value="next" class="btn">Next</button>
   </div>
   <div class="hero-unit" id="misc">
     <span class="badge">Misc</span>
@@ -98,7 +102,8 @@
         </div>
       </div>
     </div>
-    <button type="button" class="btn">Prev</button>&nbsp;
+    <button type="button" prev="description" next="misc" value="prev" class="btn">Prev</button>
+    &nbsp;
     <button type="submit" class="btn">Click!</button>
   </div>
 </form>
