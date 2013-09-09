@@ -6,112 +6,78 @@
 {% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
 {% block timeline %}
 <div class="container">
-<form class="plan_add" method="POST" action="">
   <div class="hero-unit" id="title">
     <span class="badge">Title</span>
     <div class="well">
       <div class="control-group">
 	<label class="control-label">Project Title</label>
-	<div class="controls"><input type="text" name="title" /></div>
+	<div class="controls">{{plan["title"]}}</div>
       </div>
       <div class="control-group">
 	<label class="control-label">Tags</label>
-	<div class="controls"><input type="text" name="tags" id="tags" /></div>
+	<div class="controls">
+            {% for tag in plan["tags"] %}
+            <span class="label tags">{{ tag }}</span>&nbsp;
+            {% endfor %}
+        </div>
       </div>
     </div>
-    <button type="button" prev="title" next="member" value="next" class="btn">Next</button>
-  </div>
-  <div class="hero-unit" id="member">
+    <br /><br />
     <span class="badge">Members</span>
     <div class="well">
       <div class="control-group">
-	<label class="control-label">Initiators</label>
-	<div class="controls">
-            <input type="text" name="initiators" id="initiators" class="initiators" />
-            &nbsp;
-            <button type="button" class="btn initiators" id="add-initiators">Add</button>
-            <br />
-            <div id="initiator-lists"></div>
-            <input type="hidden" name="initiator-list" id="initiator-list" class="initiator-list" />
+        <label class="control-label">Initiators</label>
+        <div class="controls">
+            {% for initiator in plan["initiators"] %}
+            <span class="label initiators">{{ initiator }}</span>&nbsp;
+            {% endfor %}
         </div>
       </div>
       <div class="control-group">
-	<label class="control-label">Masters</label>
-	<div class="controls">
-            <input type="text" name="masters" id="masters" class="masters" />
-            &nbsp;
-            <button type="button" class="btn masters" id="add-masters">Add</button>
-            <br />
-            <div id="master-lists"></div>
-            <input type="hidden" name="master-list" id="master-list" class="master-list" />
+        <label class="control-label">Masters</label>
+        <div class="controls">
+            {% for master in plan["masters"] %}
+            <span class="label masters">{{ master }}</span>&nbsp;
+            {% endfor %}
         </div>
       </div>
       <div class="control-group">
         <label class="control-label">Members</label>
         <div class="controls">
-            <input type="text" name="members" id="members" />
-            &nbsp;
-            <button type="button" class="btn members" id="add-members">Add</button>
-            <br />
-            <div id="member-lists"></div>
-            <input type="hidden" name="member-list" id="member-list" class="member-list" />
+            {% for member in plan["members"] %}
+            <span class="label members">{{ member }}</span>&nbsp;
+            {% endfor %}
         </div>
       </div>
     </div>
-    <button type="button" prev="title" next="member" value="prev" class="btn">Prev</button>
-    &nbsp;
-    <button type="button" prev="member" next="description" value="next" class="btn">Next</button>
-  </div>
-  <div class="hero-unit" id="description">
+    <br /><br />
     <span class="badge">Description</span>
     <div class="well">
       <div class="control-group">
-	<label class="control-label">Description</label>
-	<div class="controls">
-            <textarea id="description-cotent" nme="description"></textarea>
+        <label class="control-label">Description</label>
+        <div class="controls">
+            {{ plan["description"] }}
         </div>
       </div>
     </div>
-    <button type="button" prev="member" next="description" value="prev" class="btn">Prev</button>
-    &nbsp;
-    <button type="button" prev="description" next="misc" value="next" class="btn">Next</button>
-  </div>
-  <div class="hero-unit" id="misc">
+    <br /><br />
     <span class="badge">Misc</span>
     <div class="well">
       <div class="control-group">
-	<label class="control-label">Equipments</label>
-	<div class="controls">
-            <input type="text" name="equipments" id="equipments" class="equipments">
-            &nbsp;
-            <button type="button" class="btn equipments" id="add-equipments">Add</button>
-            <br />
-            <div id="equipment-lists"></div>
-            <input type="hidden" name="equipment-list" id="equipment-list" class="equipment-list" />
+        <label class="control-label">Equipments</label>
+        <div class="controls">
+            {% for equipment in plan["equipments"] %}
+            <span class="label equipments">{{ equipment }}</span>&nbsp;
+            {% endfor %}
         </div>
       </div>
       <div class="control-group">
-	<label class="control-label">Status</label>
-	<div class="controls">
-            <select name="status">
-                <option value="New">New</option>
-                <option value="Process">Process</option>
-                <option value="Done">Done</option>
-                <option value="Dropped">Dropped</option>
-            </select>
+        <label class="control-label">Status</label>
+        <div class="controls">
+            {{ plan["status"] }}
         </div>
       </div>
     </div>
-    <button type="button" prev="description" next="misc" value="prev" class="btn">Prev</button>
-    &nbsp;
-    <button type="submit" class="btn">Click!</button>
   </div>
-</form>
 </div>
-{% endblock %}
-{% block extraJS %}
-<script src="../../static/js/jquery-validate.min.js"></script>
-<script src="../../static/js/jquery.tagsinput.min.js"></script>
-<script src="../../static/js/jquery.marcopolo.min.js"></script>
-<script src="../../static/js/custom/prphoto_plan.js"></script>
 {% endblock %}
