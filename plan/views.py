@@ -46,10 +46,13 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
+    for k,v in data.items():
+        print 'k',k,'v',v
     validated,message = Plan.validate(data)
     if validated:
         new_id = ObjectId()
         cleared_data = Plan.clear_data(data)
+        print 'cleared data',cleared_data
         res  = Plan().save(new_id,cleared_data)
         if res:
             return redirect('/plan/{}'.format(str(new_id)))

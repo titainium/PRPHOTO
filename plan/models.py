@@ -64,11 +64,13 @@ class Plan(object):
     
     @staticmethod
     def validate(data):
-        """ Validate  data that submitted from user
+        """  Validate the data submitted from user
+
         :return: result,message
         """
+        
         # required fields
-        for field in ['title','tags']:
+        for field in ['title','status']:
             if not data.get(field):
                 return False,'field {} is required'.format(field)
         return True,'success'
@@ -78,10 +80,11 @@ class Plan(object):
         """ clear data
 
         :param data: a dict object
-        :return : a dict object be cleared
+        :return: a dict object that was cleared
         """
+
         # convert string to list
-        for key in ['tags']:
+        for key in ['tags','masters','initiators','equipments']:
             data[key] = data[key].split(',')
 
         # some others
