@@ -70,7 +70,7 @@ class Plan(object):
         """
         
         # required fields
-        for field in ['title','status']:
+        for field in ['title','status','description']:
             if not data.get(field):
                 return False,'field {} is required'.format(field)
         return True,'success'
@@ -82,10 +82,17 @@ class Plan(object):
         :param data: a dict object
         :return: a dict object that was cleared
         """
+        cleared_data = {}
+
+        for key in ['title','description']:
+            if data.has_key(key):
+                cleared_data[key] = data.get(key)
 
         # convert string to list
-        for key in ['tags','masters','initiators','equipments']:
-            data[key] = data[key].split(',')
+        for key in ['tag-list','master-list','initiator-list','equipment-list']:
+            if data.has_key(key):
+                _key = key.replace('-list','s')
+                cleared_data[_key] = data[key].split(',')
 
         # some others
         # TODO
