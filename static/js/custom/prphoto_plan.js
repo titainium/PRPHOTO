@@ -183,8 +183,4 @@ $(document).ready(function(){
             $("#" + $(this).attr("prev")).slideDown();
         }
     });
-    
-    $(".title-unit, .members-unit, description-unit, misc-unit").tooltip({placement: 'top',
-        title: 'Edit'
-    });
 });
