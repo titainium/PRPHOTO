@@ -46,13 +46,10 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
-    for k,v in data.items():
-        print 'k',k,'v',v
     validated,message = Plan.validate(data)
     if validated:
         new_id = ObjectId()
         cleared_data = Plan.clear_data(data)
-        print 'cleared data',cleared_data
         res  = Plan().save(new_id,cleared_data)
         if res:
             return redirect('/plan/{}'.format(str(new_id)))
@@ -63,12 +60,10 @@ def plan_add():
 
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
-    # mock
-    #pid = ObjectId(pid)
+    pid = ObjectId(pid)
     plan = Plan.get_detail(pid)
-    return str(plan)
     if plan:
-        return render_template('plan_detail.html',locals())
+        return render_template('plan_detail.html',plan=plan)
     
     abort(404)
 
