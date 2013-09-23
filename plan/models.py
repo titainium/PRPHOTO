@@ -70,7 +70,7 @@ class Plan(object):
         """
         
         # required fields
-        for field in ['title','status']:#,'description']:
+        for field in ['title','status','description']:
             if not data.get(field):
                 return False,'field {} is required'.format(field)
 
@@ -85,9 +85,9 @@ class Plan(object):
                     return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
 
         # lenght limit (list)
-        for field,min,max in  [('tag-list',1,100),('master-list',1,100),('initiator-list',1,100),('equipment-list',1,100)]:
-            if data.get(field):
-                if not min <= len(data[field].split(',')) <= max:
+        for field,min,max in  [('tags',1,100),('master-list',1,100),('initiator-list',1,100),('equipment-list',1,100),('member-list',1,100)]:
+            if data.has_key(field):
+                if not min <= len(data[field].split(',')) <= max or not data[field]:
                     return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
 
         return True,'success'
@@ -108,9 +108,12 @@ class Plan(object):
                 cleared_data[key] = data.get(key,'').upper()
 
         # convert string to list
-        for key in ['tag-list','master-list','initiator-list','equipment-list']:
+        for key in ['tag-list','master-list','initiator-list','equipment-list','member-list','tags']:
             if data.has_key(key):
-                _key = key.replace('-list','s')
+                if key.endswith('-list'):
+                    _key = key.replace('-list','s')
+                elif key.endswith('s'):
+                    _key = key
                 cleared_data[_key] = data[key].split(',')
 
         # do some others
