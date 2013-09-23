@@ -70,7 +70,7 @@ class Plan(object):
         """
         
         # required fields
-        for field in ['title','status']:#'description']:
+        for field in ['title','status','description']:
             if not data.get(field):
                 return False,'field {} is required'.format(field)
         return True,'success'
