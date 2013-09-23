@@ -70,9 +70,26 @@ class Plan(object):
         """
         
         # required fields
-        for field in ['title','status','description']:
+        for field in ['title','status']:#,'description']:
             if not data.get(field):
                 return False,'field {} is required'.format(field)
+
+            if field == 'status':
+                if data[field].upper() not in ['NEW','PROCESS','DONE','DROPPED']:
+                    return False,'field {}: value error'.format(field)
+
+        # lenght limit (string)
+        for field,min,max in [('title',5,300)]:
+            if data.get(field):
+                if not min <= len(data[field]) <= max:
+                    return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
+
+        # lenght limit (list)
+        for field,min,max in  [('tag-list',1,100),('master-list',1,100),('initiator-list',1,100),('equipment-list',1,100)]:
+            if data.get(field):
+                if not min <= len(data[field].split(',')) <= max:
+                    return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
+
         return True,'success'
 
     @staticmethod
@@ -84,9 +101,11 @@ class Plan(object):
         """
         cleared_data = {}
 
-        for key in ['title','description']:
+        for key in ['title','description','status']:
             if data.has_key(key):
                 cleared_data[key] = data.get(key)
+            if key == 'status':
+                cleared_data[key] = data.get(key,'').upper()
 
         # convert string to list
         for key in ['tag-list','master-list','initiator-list','equipment-list']:
@@ -94,9 +113,8 @@ class Plan(object):
                 _key = key.replace('-list','s')
                 cleared_data[_key] = data[key].split(',')
 
-        # some others
-        # TODO
-        return data
+        # do some others
+        return cleared_data
 
     def get_plans_by_public(self, is_public=True):
         '''
