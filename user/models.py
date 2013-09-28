@@ -6,7 +6,10 @@ from prphoto import mongo
 
 __all__ = ['User']
 
-class User:
+class User(object):
+    name     = ""
+    password = ""
+    
     def __init__(self, name, password):
         self.name = name
         self.password = password

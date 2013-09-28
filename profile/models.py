@@ -9,6 +9,11 @@ __all__ = ['Profile']
 
 class Profile(object):
     ''' user's profile infomation.  '''
+    nick_name        = ""
+    location         = ""
+    interested_plans = []
+    
+    
     def __init__(self, username=None, user_id=None, nick_name=None, location=None):
         self.username = username
         self.user_id = user_id
