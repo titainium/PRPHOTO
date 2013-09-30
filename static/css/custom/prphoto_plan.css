@@ -23,15 +23,55 @@
     display: none;
 }
 
-/*input.mp_input {
-  border: 1px solid #000000;
-  font: inherit;
-  font-size: 100%;
-  margin: 0;
-  outline: none;
-  padding: 3px;
-  width: 250px;
-}*/
+.carousel {
+    margin-bottom: 60px;
+}
+
+.carousel .container {
+    position: relative;
+    z-index: 9;
+}
+
+.carousel-control {
+    background-color: transparent;
+    border: 0;
+    font-size: 120px;
+    height: 80px;
+    margin-top: 0;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    z-index: 10;
+}
+
+.carousel .item {
+    height: 500px;
+}
+
+.carousel img {
+    height: 500px;
+    left: 0;
+    min-width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.carousel-caption {
+    background-color: transparent;
+    margin-top: 200px;
+    max-width: 550px;
+    position: static;
+    padding: 0 20px;
+}
+
+.carousel-caption h1, .carousel-caption .lead {
+    color: #fff;
+    line-height: 1.25;
+    margin: 0;
+    text-shadow: 0 1px 1px rgba(0,0,0,.4);
+}
+
+.carousel-caption .btn {
+    margin-top: 10px;
+}
 
 /* Ordered list for display results. */
 ol.mp_list {

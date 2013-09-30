@@ -17,6 +17,7 @@ class Plan(object):
     member_ids      = []
     tags            = []
     interested_ids  = []
+    samples         = []
     equipments      = ''
     title           = ''
     description     = ''
