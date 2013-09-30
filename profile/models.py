@@ -20,6 +20,11 @@ class Profile(object):
         self.nick_name = nick_name
         self.location = location
 
+    def get_interested_count(uid):
+        ''' '''
+        r = mongo.db.users.find_one({'_id': ObjectId(uid)}, {'interested_plans', 1})
+        return len(r.get('interested_plans', []))
+
     def save(self):
         ''' add a profile to some user.  '''
         query_dict = {}
