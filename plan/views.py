@@ -58,6 +58,36 @@ def plan_add():
         flash('error',message)
         return render_template('plan_add.html',**data)
 
+
+@plan.route('/plan/update/<pid>', methods=['POST','GET'])
+@login_required
+def plan_update(pid):
+    pid = ObjectId(pid)
+    plan = Plan.get_detail(pid)
+
+    # get request
+    if request.method == 'GET':
+        if plan:
+            return render_template('plan_update.html',plan=plan)
+        else:
+            abort(404)
+        return render_template('plan_add.html',**locals())
+    
+    # clear data
+    data = request.form.to_dict()
+    validated,message = Plan.validate(data)
+    if validated:
+        # update recored
+        cleared_data = Plan.clear_data(data)
+        res  = Plan().save(pid,cleared_data)
+        if res:
+            return redirect('/plan/{}'.format(str(pid)))
+        return str(res)
+    else:
+        flash('error',message)
+        return render_template('plan_update.html',**data)
+
+
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
     pid = ObjectId(pid)
