@@ -26,9 +26,17 @@ class Plan(object):
     location        = ''
     is_public       = True
     status          = 'New' #total 4 status: New, Process, Done, Dropped
+    classes         = 'non-business' #now 4 clases: non-business, business, donate, advertisement
 
     def __init__(self):
         pass
+
+
+    @staticmethod
+    def get_interested_counts(pid):
+        ''' '''
+        r = mongo.db.plan.find_one({'_id': pid}, {'interested_ids', 1}) or {}
+        return len(r.get('interested_ids', []))
     
     @staticmethod
     def get_detail(pid):
