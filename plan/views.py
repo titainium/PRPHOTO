@@ -56,7 +56,7 @@ def plan_add():
             return redirect('/plan/{}'.format(str(new_id)))
         return str(res)
     else:
-        flash('error',message)
+        flash(message)
         return render_template('plan_add.html',**data)
 
 @plan.route('/plan/update/<pid>', methods=['POST','GET'])
