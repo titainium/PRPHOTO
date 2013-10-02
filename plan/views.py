@@ -41,6 +41,7 @@ def plan_listing():
 @plan.route('/plan/add', methods=['POST','GET'])
 @login_required
 def plan_add():
+    flash('error','test')
     if request.method == 'GET':
         return render_template('plan_add.html',**locals())
     
@@ -57,7 +58,6 @@ def plan_add():
     else:
         flash('error',message)
         return render_template('plan_add.html',**data)
-
 
 @plan.route('/plan/update/<pid>', methods=['POST','GET'])
 @login_required
