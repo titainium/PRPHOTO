@@ -41,7 +41,6 @@ def plan_listing():
 @plan.route('/plan/add', methods=['POST','GET'])
 @login_required
 def plan_add():
-    flash('error','test')
     if request.method == 'GET':
         return render_template('plan_add.html',**locals())
     
@@ -49,11 +48,11 @@ def plan_add():
     data = request.form.to_dict()
     userid = session['user_id']
     for key in ['master-list','initiator-list','member-list']:
-        if type(data.get(key)) is list:
-            data[key].append(userid)
-            print 'aaaaaa'
+        print 'type',type(data.get(key)),data.get(key)
+        if type(data.get(key)) in  [str,unicode]:
+            data[key] += ',{}'.format(userid)
         else:
-            data[key] = [userid]
+            data[key] = '{}'.format(userid)
     validated,message = Plan.validate(data)
     if validated:
         new_id = ObjectId()
@@ -82,7 +81,13 @@ def plan_update(pid):
     
     # clear data
     data = request.form.to_dict()
-
+    userid = session['user_id']
+    for key in ['master-list','initiator-list','member-list']:
+        print 'type',type(data.get(key)),data.get(key)
+        if type(data.get(key)) in  [str,unicode]:
+            data[key] += ',{}'.format(userid)
+        else:
+            data[key] = '{}'.format(userid)
     validated,message = Plan.validate(data)
     if validated:
         # update recored
