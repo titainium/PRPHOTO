@@ -47,6 +47,13 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
+    userid = session['user_id']
+    for key in ['master-list','initiator-list','member-list']:
+        if type(data.get(key)) is list:
+            data[key].append(userid)
+            print 'aaaaaa'
+        else:
+            data[key] = [userid]
     validated,message = Plan.validate(data)
     if validated:
         new_id = ObjectId()
@@ -75,6 +82,7 @@ def plan_update(pid):
     
     # clear data
     data = request.form.to_dict()
+
     validated,message = Plan.validate(data)
     if validated:
         # update recored

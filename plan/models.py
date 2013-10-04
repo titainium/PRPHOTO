@@ -92,13 +92,13 @@ class Plan(object):
         for field,min,max in [('title',5,300)]:
             if data.get(field):
                 if not min <= len(data[field]) <= max:
-                    return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
+                    return False,'field {}:lenght of this value must be in {}~{}'.format(field,min,max)
 
         # lenght limit (list)
         for field,min,max in  [('tags',1,100),('master-list',1,100),('initiator-list',1,100),('equipment-list',1,100),('member-list',1,100)]:
             if data.has_key(field):
                 if not min <= len(data[field].split(',')) <= max or not data[field]:
-                    return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
+                    return False,'field {}:lenght of this value must be in {}~{}'.format(field,min,max)
 
         return True,'success'
 
