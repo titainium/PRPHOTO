@@ -7,14 +7,14 @@
 {% block timeline %}
 <div class="container">
   <div class="hero-unit">
-    <span class="badge">Title</span>
+    <span class="badge"><h2>Title</h2></span>
     <div class="well title-unit">
       <div class="control-group">
-	<label class="control-label">Project Title</label>
+	<label class="control-label"><h3>Project Title</h3></label>
 	<div class="controls">{{plan["title"]}}</div>
       </div>
       <div class="control-group">
-	<label class="control-label">Tags</label>
+	<label class="control-label"><h3>Tags</h3></label>
 	<div class="controls">
             {% for tag in plan["tags"] %}
             <span class="label tags">{{ tag }}</span>&nbsp;
@@ -23,10 +23,10 @@
       </div>
     </div>
     <br /><br />
-    <span class="badge">Members</span>
+    <span class="badge"><h2>Members</h2></span>
     <div class="well members-unit">
       <div class="control-group">
-        <label class="control-label">Initiators</label>
+        <label class="control-label"><h3>Initiators</h3></label>
         <div class="controls">
             {% for initiator in plan["initiators"] %}
             <span class="label initiators">{{ initiator }}</span>&nbsp;
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label">Masters</label>
+        <label class="control-label"><h3>Masters</h3></label>
         <div class="controls">
             {% for master in plan["masters"] %}
             <span class="label masters">{{ master }}</span>&nbsp;
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label">Members</label>
+        <label class="control-label"><h3>Members</h3></label>
         <div class="controls">
             {% for member in plan["members"] %}
             <span class="label members">{{ member }}</span>&nbsp;
@@ -51,20 +51,20 @@
       </div>
     </div>
     <br /><br />
-    <span class="badge">Description</span>
+    <span class="badge"><h2>Description</h2></span>
     <div class="well description-unit">
       <div class="control-group">
-        <label class="control-label">Description</label>
+        <label class="control-label"><h3>Description</h3></label>
         <div class="controls">
             {{ plan["description"] }}
         </div>
       </div>
     </div>
     <br /><br />
-    <span class="badge">Misc</span>
+    <span class="badge"><h2>Misc</h2></span>
     <div class="well misc-unit">
       <div class="control-group">
-        <label class="control-label">Equipments</label>
+        <label class="control-label"><h3>Equipments</h3></label>
         <div class="controls">
             {% for equipment in plan["equipments"] %}
             <span class="label equipments">{{ equipment }}</span>&nbsp;
@@ -72,7 +72,7 @@
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label">Status</label>
+        <label class="control-label"><h3>Status</h3></label>
         <div class="controls">
             {{ plan["status"] }}
         </div>
