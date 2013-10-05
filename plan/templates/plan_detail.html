@@ -29,7 +29,7 @@
         <label class="control-label"><h3>Initiators</h3></label>
         <div class="controls">
             {% for initiator in plan["initiators"] %}
-            <span class="label initiators">{{ initiator }}</span>&nbsp;
+            <span class="label initiators">{{ initiator.profile.nick_name }}</span>&nbsp;
             {% endfor %}
         </div>
       </div>
@@ -37,7 +37,7 @@
         <label class="control-label"><h3>Masters</h3></label>
         <div class="controls">
             {% for master in plan["masters"] %}
-            <span class="label masters">{{ master }}</span>&nbsp;
+            <span class="label masters">{{ master.profile.nick_name }}</span>&nbsp;
             {% endfor %}
         </div>
       </div>
@@ -45,7 +45,7 @@
         <label class="control-label"><h3>Members</h3></label>
         <div class="controls">
             {% for member in plan["members"] %}
-            <span class="label members">{{ member }}</span>&nbsp;
+            <span class="label members">{{ member.profile.nick_name }}</span>&nbsp;
             {% endfor %}
         </div>
       </div>
