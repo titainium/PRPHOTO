@@ -38,6 +38,15 @@ def plan_listing():
     return render_template('plan_index.html')
 
 
+def format_user_fields(data,user_id):
+    profile   = Profile.get_profile(user_id=user_id)
+    for key in ['master-list','initiator-list','member-list']:
+        if type(data.get(key)) in  [str,unicode]:
+            data[key] += ',{}'.format(profile['profile']['nick_name'])
+        else:
+            data[key] = '{}'.format(profile['profile']['nick_name'])
+    return data
+
 @plan.route('/plan/add', methods=['POST','GET'])
 @login_required
 def plan_add():
@@ -47,12 +56,7 @@ def plan_add():
     # clear data
     data = request.form.to_dict()
     user_id = ObjectId(session['user_id'])
-    profile   = Profile.get_profile(user_id=user_id)
-    for key in ['master-list','initiator-list','member-list']:
-        if type(data.get(key)) in  [str,unicode]:
-            data[key] += ',{}'.format(profile['profile']['nick_name'])
-        else:
-            data[key] = '{}'.format(profile['profile']['nick_name'])
+    data = format_user_fields(data,user_id)
 
     validated,message = Plan.validate(data)
     if validated:
@@ -82,13 +86,8 @@ def plan_update(pid):
     
     # clear data
     data = request.form.to_dict()
-    userid = session['user_id']
-    for key in ['master-list','initiator-list','member-list']:
-        print 'type',type(data.get(key)),data.get(key)
-        if type(data.get(key)) in  [str,unicode]:
-            data[key] += ',{}'.format(userid)
-        else:
-            data[key] = '{}'.format(userid)
+    user_id = ObjectId(session['user_id'])
+    data = format_user_fields(data,user_id)
     validated,message = Plan.validate(data)
     if validated:
         # update recored
