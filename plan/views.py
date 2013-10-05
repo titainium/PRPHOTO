@@ -42,9 +42,9 @@ def format_user_fields(data,user_id):
     profile   = Profile.get_profile(user_id=user_id)
     for key in ['master-list','initiator-list','member-list']:
         if type(data.get(key)) in  [str,unicode]:
-            data[key] += ',{}'.format(profile['profile']['nick_name'])
+            data[key] += u',{}'.format(profile['profile']['nick_name'])
         else:
-            data[key] = '{}'.format(profile['profile']['nick_name'])
+            data[key] = u'{}'.format(profile['profile']['nick_name'])
     return data
 
 @plan.route('/plan/add', methods=['POST','GET'])
