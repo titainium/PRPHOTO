@@ -106,7 +106,7 @@ class Plan(object):
             if data.has_key(field):
                 for nick_name in data[field].split(','):
                     if nick_name and not Profile.check_exists(nick_name):
-                        return False,'nick name:{} does not exists'.format(nick_name)
+                        return False,u'nick name:{} does not exists'.format(nick_name)
 
         return True,'success'
 
