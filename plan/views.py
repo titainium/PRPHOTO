@@ -46,13 +46,14 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
-    userid = session['user_id']
+    user_id = ObjectId(session['user_id'])
+    profile   = Profile.get_profile(user_id=user_id)
     for key in ['master-list','initiator-list','member-list']:
-        print 'type',type(data.get(key)),data.get(key)
         if type(data.get(key)) in  [str,unicode]:
-            data[key] += ',{}'.format(userid)
+            data[key] += ',{}'.format(profile['profile']['nick_name'])
         else:
-            data[key] = '{}'.format(userid)
+            data[key] = '{}'.format(profile['profile']['nick_name'])
+
     validated,message = Plan.validate(data)
     if validated:
         new_id = ObjectId()
