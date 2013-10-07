@@ -4,6 +4,22 @@
 <link rel=stylesheet type=text/css href="../../static/css/custom/prphoto_plan.css">
 {% endblock %}
 {% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
+{% block menu %}
+<ul class="nav" role="navigation">
+<li><a href="/">Home</a></li>
+<li><a href="/myprofile">Profile</a></li>
+</ul>
+<ul class="nav" role="navigation">
+    <li>
+        <a href="#" id="plan-menu" class="dropdown-toggle" data-toggle="dropdown">Plan</a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="plan-menu">
+            <li role="presentation">
+                <a href="/plan/update/{{ plan['_id'] }}" role="menuitem">Update</a>
+            </li>
+        </ul>
+    </li>
+</ul>
+{% endblock %}
 {% block timeline %}
 <div class="container">
 <form class="plan_add" method="POST" action="">
