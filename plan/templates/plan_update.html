@@ -32,7 +32,7 @@
       </div>
       <div class="control-group">
 	<label class="control-label">Tags</label>
-	<div class="controls"><input type="text" name="tags" id="tags" /></div>
+	<div class="controls"><input type="text" name="tags" id="tags" value="{{ plan['tags'] | to_string }}" /></div>
       </div>
     </div>
     <button type="button" prev="title" next="member" value="next" class="btn">Next</button>
@@ -47,7 +47,13 @@
             &nbsp;
             <button type="button" class="btn initiators" id="add-initiators">Add</button>
             <br />
-            <div id="initiator-lists"></div>
+            <div id="initiator-lists">
+            {% for initiator in plan['initiators'] %}
+            <span class='initiator-container'><span class='label initiator'>
+            {{ initiator['profile']['nick_name'] }}
+            </span>&nbsp;</span>
+            {% endfor %}
+            </div>
             <input type="hidden" name="initiator-list" id="initiator-list" class="initiator-list" />
         </div>
       </div>
