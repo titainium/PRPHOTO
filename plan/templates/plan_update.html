@@ -54,7 +54,7 @@
             </span>&nbsp;</span>
             {% endfor %}
             </div>
-            <input type="hidden" name="initiator-list" id="initiator-list" class="initiator-list" />
+            <input type="hidden" name="initiator-list" id="initiator-list" class="initiator-list" value="{{ plan['initiators'] | get_nick_name }}" />
         </div>
       </div>
       <div class="control-group">
@@ -64,8 +64,14 @@
             &nbsp;
             <button type="button" class="btn masters" id="add-masters">Add</button>
             <br />
-            <div id="master-lists"></div>
-            <input type="hidden" name="master-list" id="master-list" class="master-list" />
+            <div id="master-lists">
+            {% for master in plan['masters'] %}
+            <span class='master-container'><span class='label master'>
+            {{ master['profile']['nick_name'] }}
+            </span>&nbsp;</span>
+            {% endfor %}
+            </div>
+            <input type="hidden" name="master-list" id="master-list" class="master-list" value="{{ plan['masters'] | get_nick_name }}" />
         </div>
       </div>
       <div class="control-group">
@@ -75,8 +81,14 @@
             &nbsp;
             <button type="button" class="btn members" id="add-members">Add</button>
             <br />
-            <div id="member-lists"></div>
-            <input type="hidden" name="member-list" id="member-list" class="member-list" />
+            <div id="member-lists">
+            {% for member in plan['members'] %}
+            <span class='member-container'><span class='label member'>
+            {{ member['profile']['nick_name'] }}
+            </span>&nbsp;</span>
+            {% endfor %}
+            </div>
+            <input type="hidden" name="member-list" id="member-list" class="member-list" value="{{ plan['members'] | get_nick_name }}" />
         </div>
       </div>
     </div>
@@ -90,7 +102,7 @@
       <div class="control-group">
 	<label class="control-label">Description</label>
 	<div class="controls">
-            <textarea id="description-cotent" name="description"></textarea>
+            <textarea id="description-cotent" name="description">{{ plan['description'] }}</textarea>
         </div>
       </div>
     </div>
@@ -108,18 +120,26 @@
             &nbsp;
             <button type="button" class="btn equipments" id="add-equipments">Add</button>
             <br />
-            <div id="equipment-lists"></div>
-            <input type="hidden" name="equipment-list" id="equipment-list" class="equipment-list" />
+            <div id="equipment-lists">
+            {% for equipment in plan['equipments'] %}
+            <span class='equipment-container'><span class='label equipment'>
+            {{ equipment }}
+            </span>&nbsp;</span>
+            {% endfor %}</div>
+            <input type="hidden" name="equipment-list" id="equipment-list" class="equipment-list" value="{{ plan['equipments'] | to_string }}" />
         </div>
       </div>
       <div class="control-group">
 	<label class="control-label">Status</label>
 	<div class="controls">
             <select name="status">
-                <option value="New">New</option>
-                <option value="Process">Process</option>
-                <option value="Done">Done</option>
-                <option value="Dropped">Dropped</option>
+                {% for val in ['New', 'Process', 'Done', 'Dropped'] %}
+                {% if val == plan['status'] %}
+                <option value="{{ val }}" selected>{{ val }}</option>
+                {% else %}
+                <option value="{{ val }}">{{ val }}</option>
+                {% endif %}
+                {% endfor %}
             </select>
         </div>
       </div>

@@ -94,10 +94,9 @@
 	<label class="control-label">Status</label>
 	<div class="controls">
             <select name="status">
-                <option value="New">New</option>
-                <option value="Process">Process</option>
-                <option value="Done">Done</option>
-                <option value="Dropped">Dropped</option>
+                {% for val in ['New', 'Process', 'Done', 'Dropped'] %}
+                <option value="{{ val }}">{{ val }}</option>
+                {% endfor %}
             </select>
         </div>
       </div>
