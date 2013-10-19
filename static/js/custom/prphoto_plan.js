@@ -184,12 +184,13 @@ $(document).ready(function(){
         }
     });
     
-    $("sample_upload").uploadify({
+    $("#sample_upload").uploadify({
         'fileSizeLimit': '4MB',
         'fileTypeDesc' : 'Image Files',
         'fileTypeExts' : '*.gif; *.jpg; *.png',
-        'swf'          : 'uploadify.swf',
-        'uploader'     : '/plan/upload_sample',
+        'swf'          : '/static/flash/uploadify.swf',
+        'uploader'     : '/plan/uploader',
         'uploadLimit'  : 4
+
     });
 });

@@ -33,6 +33,10 @@ from utils.login import login_required
 
 plan = Blueprint('plan', __name__, template_folder = 'templates')
 
+@plan.route('/plan/uploader',methods=['POST','GET'])
+def uploader():
+    return 'hello'
+
 @plan.route('/plan',methods=['GET'])
 def plan_listing():
     return render_template('plan_index.html')
