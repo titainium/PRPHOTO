@@ -183,4 +183,13 @@ $(document).ready(function(){
             $("#" + $(this).attr("prev")).slideDown();
         }
     });
+    
+    $("sample_upload").uploadify({
+        'fileSizeLimit': '4MB',
+        'fileTypeDesc' : 'Image Files',
+        'fileTypeExts' : '*.gif; *.jpg; *.png',
+        'swf'          : 'uploadify.swf',
+        'uploader'     : '/plan/upload_sample',
+        'uploadLimit'  : 4
+    });
 });

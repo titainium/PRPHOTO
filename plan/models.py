@@ -8,6 +8,7 @@ Implements plan's model
 
 from datetime import datetime
 from prphoto import mongo
+from profile.models import Profile
 
 __all__ = ['Plan']
 
@@ -26,6 +27,7 @@ class Plan(object):
     location        = ''
     is_public       = True
     status          = 'New' #total 4 status: New, Process, Done, Dropped
+    classes         = 'non-business' #now 4 clases: non-business, business, donate, advertisement
 
     def __init__(self):
         pass
@@ -91,13 +93,20 @@ class Plan(object):
         for field,min,max in [('title',5,300)]:
             if data.get(field):
                 if not min <= len(data[field]) <= max:
-                    return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
+                    return False,'field {}:lenght of this value must be in {}~{}'.format(field,min,max)
 
         # lenght limit (list)
         for field,min,max in  [('tags',1,100),('master-list',1,100),('initiator-list',1,100),('equipment-list',1,100),('member-list',1,100)]:
             if data.has_key(field):
                 if not min <= len(data[field].split(',')) <= max or not data[field]:
-                    return False,'field {}:lenght of value must in {}~{}'.format(field,min,max)
+                    return False,'field {}:lenght of this value must be in {}~{}'.format(field,min,max)
+
+        # check users
+        for field in ['master-list','initiator-list','member-lis']:
+            if data.has_key(field):
+                for nick_name in data[field].split(','):
+                    if nick_name and not Profile.check_exists(nick_name):
+                        return False,u'nick name:{} does not exists'.format(nick_name)
 
         return True,'success'
 
@@ -123,7 +132,15 @@ class Plan(object):
                     _key = key.replace('-list','s')
                 elif key.endswith('s'):
                     _key = key
-                cleared_data[_key] = data[key].split(',')
+                cleared_data[_key] = list(set(data[key].split(',')))
+
+                if _key in ['masters','initiators','members']:
+                    users = []
+                    for nick_name in cleared_data[_key]:
+                        profile = Profile.get_profile(nick_name=nick_name)
+                        if profile:
+                            users.append(profile)
+                        cleared_data[_key] = users
 
         # do some others
         return cleared_data

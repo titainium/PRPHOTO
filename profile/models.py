@@ -52,7 +52,7 @@ class Profile(object):
 
 
     @classmethod
-    def get_profile(cls, user_id=None, username=None):
+    def get_profile(cls, user_id=None, username=None,nick_name=None):
         '''
             get user's profile by user_id or username
             @user_id => the target user's id
@@ -64,6 +64,8 @@ class Profile(object):
             query_dict.update({'_id': ObjectId(user_id)})
         if username:
             query_dict.update({'username': username})
+        if nick_name:
+            query_dict.update({'nick_name': username})
 
         if not query_dict:
             pass

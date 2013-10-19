@@ -38,6 +38,15 @@ def plan_listing():
     return render_template('plan_index.html')
 
 
+def format_user_fields(data,user_id):
+    profile   = Profile.get_profile(user_id=user_id)
+    for key in ['master-list','initiator-list','member-list']:
+        if type(data.get(key)) in  [str,unicode]:
+            data[key] += u',{}'.format(profile['profile']['nick_name'])
+        else:
+            data[key] = u'{}'.format(profile['profile']['nick_name'])
+    return data
+
 @plan.route('/plan/add', methods=['POST','GET'])
 @login_required
 def plan_add():
@@ -46,6 +55,9 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
+    user_id = ObjectId(session['user_id'])
+    data = format_user_fields(data,user_id)
+
     validated,message = Plan.validate(data)
     if validated:
         new_id = ObjectId()
@@ -55,8 +67,39 @@ def plan_add():
             return redirect('/plan/{}'.format(str(new_id)))
         return str(res)
     else:
-        flash('error',message)
+        flash(message)
         return render_template('plan_add.html',**data)
+
+@plan.route('/plan/update/<pid>', methods=['POST','GET'])
+@login_required
+def plan_update(pid):
+    pid = ObjectId(pid)
+    plan = Plan.get_detail(pid)
+
+    # get request
+    if request.method == 'GET':
+        if plan:
+            return render_template('plan_update.html',plan=plan)
+        else:
+            abort(404)
+        return render_template('plan_add.html',**locals())
+    
+    # clear data
+    data = request.form.to_dict()
+    user_id = ObjectId(session['user_id'])
+    data = format_user_fields(data,user_id)
+    validated,message = Plan.validate(data)
+    if validated:
+        # update recored
+        cleared_data = Plan.clear_data(data)
+        res  = Plan().save(pid,cleared_data)
+        if res:
+            return redirect('/plan/{}'.format(str(pid)))
+        return str(res)
+    else:
+        flash('error',message)
+        return render_template('plan_update.html',**data)
+
 
 @plan.route('/plan/<pid>', methods=['GET'])
 def plan_detail(pid):
