@@ -1,5 +1,6 @@
 Flask==0.10.0
 Flask-WTF==0.8.0
+PIL
 mock
 pymongo
 babel
