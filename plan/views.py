@@ -5,10 +5,14 @@
 Implements plan's model
 
 """
-
+import os
+import time
 import json
 import traceback
 import mock
+from datetime import datetime
+from PIL import Image
+from hashlib import md5
 from flask import Blueprint
 from flask import abort
 from flask import flash
@@ -32,6 +36,55 @@ from utils.const import USER_KEY
 from utils.login import login_required
 
 plan = Blueprint('plan', __name__, template_folder = 'templates')
+
+
+@plan.route('/plan/uploader',methods=['POST','GET'])
+def uploader():
+    base_path = '/tmp/prphoto/original'
+    thum_base_path = '/tmp/prphoto/thum'
+    allow_files     = 'jpg,gif'.split(',')
+    if request.method == 'POST':
+        print 111
+        file        = request.files['Filedata']
+        suf_fix     = file.filename.rsplit('.', 1)[1]
+        if file and suf_fix in allow_files:
+            # save original
+            md5_key     = md5('{}{}'.format(time.time(),file.name)).hexdigest()
+            dir1        = md5_key[0:2]
+            dir2        = md5_key[2:4]
+            dir3        = md5_key[4:6]
+            file_path   = os.path.join(base_path,dir1,dir2,dir3)
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+
+            file_name   = '{}.{}'.format(md5_key,suf_fix)
+            full_path   = os.path.join(file_path,file_name)
+            file.save(full_path)
+            print 'full path',full_path
+            
+            # save thumb
+            max_size = (250,250)
+            file_path   = os.path.join(thum_base_path,dir1,dir2,dir3)
+            if not os.path.exists(file_path):
+                os.makedirs(file_path)
+            thum_full_path   = os.path.join(file_path,file_name)
+            try:
+                im = Image.open(full_path)
+            except IOError,e:
+                print e.message
+                return '0'
+            
+            try:
+                im.thumbnail(max_size,Image.ANTIALIAS)
+                im.convert('RGB').save(thum_full_path,'jpeg',quality=100)
+            except Exception,e:
+                return 'can not convert:{}'.format(e.message)
+            else:
+                return '{}/{}/{}/{}'.format(dir1,dir2,dir3,file_name)
+
+    return '0'
+
+
 
 @plan.route('/plan',methods=['GET'])
 def plan_listing():

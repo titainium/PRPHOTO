@@ -184,12 +184,22 @@ $(document).ready(function(){
         }
     });
     
-    $("sample_upload").uploadify({
+    $("#sample_upload").uploadify({
         'fileSizeLimit': '4MB',
         'fileTypeDesc' : 'Image Files',
-        'fileTypeExts' : '*.gif; *.jpg; *.png',
-        'swf'          : 'uploadify.swf',
-        'uploader'     : '/plan/upload_sample',
-        'uploadLimit'  : 4
+        'fileTypeExts' : '*.GIF; *.gif; *.JPG; *.jpg; *.PNG; *.png',
+        'method'       : 'post',
+        'swf'          : '/static/flash/uploadify.swf',
+        'uploader'     : '/plan/uploader',
+        'uploadLimit'  : 4,
+        'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+            $(".modal-body").html('The file ' + file.name + ' could not be uploaded: ' + errorString);
+            $(".modal").modal("show");
+        },
+        'onUploadSuccess' : function(file, data, response) {
+            $(".modal-body").html('The file ' + file.name + ' was successfully uploaded with a response of ' + response + ':' + data);
+            $(".modal").modal("show");
+        }
+
     });
 });
