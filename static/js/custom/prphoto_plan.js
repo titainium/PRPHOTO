@@ -188,7 +188,7 @@ $(document).ready(function(){
         'fileSizeLimit': '4MB',
         'fileTypeDesc' : 'Image Files',
         'fileTypeExts' : '*.GIF; *.gif; *.JPG; *.jpg; *.PNG; *.png',
-        'method'       : 'post',
+        //'method'       : 'post',
         'swf'          : '/static/flash/uploadify.swf',
         'uploader'     : '/plan/uploader',
         'uploadLimit'  : 4,
