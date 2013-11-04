@@ -197,6 +197,7 @@ $(document).ready(function(){
             $(".modal").modal("show");
         },
         'onUploadSuccess' : function(file, data, response) {
+            alert('thumb path:' + data);
             $(".modal-body").html('The file ' + file.name + ' was successfully uploaded with a response of ' + response + ':' + data);
             $(".modal").modal("show");
         }

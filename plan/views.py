@@ -40,11 +40,13 @@ plan = Blueprint('plan', __name__, template_folder = 'templates')
 
 @plan.route('/plan/uploader',methods=['POST','GET'])
 def uploader():
-    base_path = '/tmp/prphoto/original'
+    base_path      = '/tmp/prphoto/original'
     thum_base_path = '/tmp/prphoto/thum'
-    allow_files     = 'jpg,gif'.split(',')
-    if request.method == 'POST':
-        print 111
+    allow_files    = ['jpg','gif']
+    thumb_max_size = (250,250)
+    file        = request.files['Filedata']
+
+    if request.method <> 'GET':
         file        = request.files['Filedata']
         suf_fix     = file.filename.rsplit('.', 1)[1]
         if file and suf_fix in allow_files:
@@ -60,10 +62,8 @@ def uploader():
             file_name   = '{}.{}'.format(md5_key,suf_fix)
             full_path   = os.path.join(file_path,file_name)
             file.save(full_path)
-            print 'full path',full_path
             
             # save thumb
-            max_size = (250,250)
             file_path   = os.path.join(thum_base_path,dir1,dir2,dir3)
             if not os.path.exists(file_path):
                 os.makedirs(file_path)
@@ -71,18 +71,17 @@ def uploader():
             try:
                 im = Image.open(full_path)
             except IOError,e:
-                print e.message
                 return '0'
             
             try:
-                im.thumbnail(max_size,Image.ANTIALIAS)
+                im.thumbnail(thumb_max_size,Image.ANTIALIAS)
                 im.convert('RGB').save(thum_full_path,'jpeg',quality=100)
             except Exception,e:
                 return 'can not convert:{}'.format(e.message)
             else:
                 return '{}/{}/{}/{}'.format(dir1,dir2,dir3,file_name)
 
-    return '0'
+    return 'post required'
 
 
 
