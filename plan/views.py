@@ -40,8 +40,8 @@ plan = Blueprint('plan', __name__, template_folder = 'templates')
 
 @plan.route('/plan/uploader',methods=['POST','GET'])
 def uploader():
-    base_path      = '/tmp/prphoto/original'
-    thum_base_path = '/tmp/prphoto/thum'
+    base_path      = '/var/prphoto/original'
+    thum_base_path = '/var/prphoto/thum'
     allow_files    = ['jpg','gif']
     thumb_max_size = (250,250)
     file        = request.files['Filedata']
