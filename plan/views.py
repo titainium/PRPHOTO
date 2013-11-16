@@ -42,13 +42,14 @@ plan = Blueprint('plan', __name__, template_folder = 'templates')
 def uploader():
     base_path      = '/var/prphoto/original'
     thum_base_path = '/var/prphoto/thum'
-    allow_files    = ['jpg','gif']
+    allow_files    = ['gif', 'jpg', 'png']
     thumb_max_size = (250,250)
     file        = request.files['Filedata']
-
-    if request.method <> 'GET':
+    
+    if request.method == 'POST':
         file        = request.files['Filedata']
-        suf_fix     = file.filename.rsplit('.', 1)[1]
+        suf_fix     = file.filename.rsplit('.', 1)[1].lower()
+        
         if file and suf_fix in allow_files:
             # save original
             md5_key     = md5('{}{}'.format(time.time(),file.name)).hexdigest()

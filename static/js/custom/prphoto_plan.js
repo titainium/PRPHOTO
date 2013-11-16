@@ -188,7 +188,7 @@ $(document).ready(function(){
         'fileSizeLimit': '4MB',
         'fileTypeDesc' : 'Image Files',
         'fileTypeExts' : '*.GIF; *.gif; *.JPG; *.jpg; *.PNG; *.png',
-        'method'       : 'post',
+        //'method'       : 'post',
         'swf'          : '/static/flash/uploadify.swf',
         'uploader'     : '/plan/uploader',
         'uploadLimit'  : 4,
@@ -198,8 +198,7 @@ $(document).ready(function(){
         },
         'onUploadSuccess' : function(file, data, response) {
             alert('thumb path:' + data);
-            $(".modal-body").html('The file ' + file.name + ' was successfully uploaded with a response of ' + response + ':' + data);
-            $(".modal").modal("show");
+            $(".sample").append("<img src='" + data + "' />");
         }
 
     });
