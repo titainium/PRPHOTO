@@ -198,7 +198,7 @@ $(document).ready(function(){
         },
         'onUploadSuccess' : function(file, data, response) {
             alert('thumb path:' + data);
-            $(".sample").append("<img src='" + data + "' />");
+            $(".sample").append("<img src='/thum/" + data + "' />");
         }
 
     });
