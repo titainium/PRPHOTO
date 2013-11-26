@@ -8,8 +8,9 @@ Implements plan's model
 import os
 import time
 import json
+from hashlib import md5
+import pickle
 import traceback
-import mock
 from datetime import datetime
 from PIL import Image
 from hashlib import md5
@@ -34,9 +35,16 @@ from user.models import User
 from utils.const import PASSWORD_KEYWORD
 from utils.const import USER_KEY
 from utils.login import login_required
+from bson.objectid import ObjectId
+from config import fs
 
 plan = Blueprint('plan', __name__, template_folder = 'templates')
 
+@plan.route('/grid/<id>',methods=['GET'])
+def gridfile(id):
+    oid = ObjectId(id)
+    content = fs.get(oid).read()
+    return content
 
 @plan.route('/plan/uploader',methods=['POST','GET'])
 def uploader():
@@ -63,6 +71,9 @@ def uploader():
             file_name   = '{}.{}'.format(md5_key,suf_fix)
             full_path   = os.path.join(file_path,file_name)
             file.save(full_path)
+
+            # mark
+            session['sample_images'] += '{},'.format(full_path)
             
             # save thumb
             file_path   = os.path.join(thum_base_path,dir1,dir2,dir3)
@@ -84,12 +95,9 @@ def uploader():
 
     return 'post required'
 
-
-
 @plan.route('/plan',methods=['GET'])
 def plan_listing():
     return render_template('plan_index.html')
-
 
 def format_user_fields(data,user_id):
     profile   = Profile.get_profile(user_id=user_id)
@@ -104,6 +112,7 @@ def format_user_fields(data,user_id):
 @login_required
 def plan_add():
     if request.method == 'GET':
+        session['sample_images'] = ''
         return render_template('plan_add.html',**locals())
     
     # clear data
@@ -111,10 +120,27 @@ def plan_add():
     user_id = ObjectId(session['user_id'])
     data = format_user_fields(data,user_id)
 
+    # valid sample_images
+    sample_images = session.get('sample_images',',').split(',')
+    if len(sample_images) <1 or len(sample_images) >4:
+        flash('需要1到4张样例图片')
+        return render_template('plan_add.html',**data)
+
+    # save pic
+    samples = []
+    for path in sample_images:
+        if not path:continue
+        with open(path) as f:
+            # 存储图片文件到mongodb中，并返回一个oid
+            # 将oid保存到samples字段中，以便显示
+            oid = fs.put(f,content_type="image/jpeg",filename=md5(path).hexdigest())
+            samples.append(oid)
+
     validated,message = Plan.validate(data)
     if validated:
         new_id = ObjectId()
         cleared_data = Plan.clear_data(data)
+        cleared_data['samples'] = samples
         res  = Plan().save(new_id,cleared_data)
         if res:
             return redirect('/plan/{}'.format(str(new_id)))
@@ -159,6 +185,7 @@ def plan_detail(pid):
     pid = ObjectId(pid)
     plan = Plan.get_detail(pid)
     if plan:
+        #img = fs.get(plan['samples'][0]).read()
         return render_template('plan_detail.html',plan=plan)
     
     abort(404)
