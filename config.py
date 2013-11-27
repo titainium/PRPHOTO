@@ -15,6 +15,7 @@ class ConfigObj(object):
     MONGO_PORT = 27017
     MONGO_DB_NAME = 'prphoto'
 
-db = getattr(pymongo.MongoClient(),ConfigObj.MONGO_DB_NAME)
+db = getattr(pymongo.MongoClient(ConfigObj.MONGO_HOST, ConfigObj.MONGO_PORT),
+        ConfigObj.MONGO_DB_NAME)
 fs = GridFS(db)
 
