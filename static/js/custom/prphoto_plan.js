@@ -183,7 +183,7 @@ $(document).ready(function(){
             $("#" + $(this).attr("prev")).slideDown();
         }
     });
-    
+
     $("#sample_upload").uploadify({
         'fileSizeLimit': '4MB',
         'fileTypeDesc' : 'Image Files',
@@ -192,6 +192,8 @@ $(document).ready(function(){
         'swf'          : '/static/flash/uploadify.swf',
         'uploader'     : '/plan/uploader',
         'uploadLimit'  : 4,
+        //上传数据中把cookie值也带上
+        'formData'     : { flask_session_cookie_name : getCookie(flask_session_cookie_name)},
         'onUploadError' : function(file, errorCode, errorMsg, errorString) {
             $(".modal-body").html('The file ' + file.name + ' could not be uploaded: ' + errorString);
             $(".modal").modal("show");

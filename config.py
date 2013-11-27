@@ -15,6 +15,11 @@ class ConfigObj(object):
     MONGO_PORT = 27017
     MONGO_DB_NAME = 'prphoto'
 
+    # cookie name 
+    SESSION_COOKIE_NAME = 'prphoto_session'
+    SESSION_COOKIE_PATH = '/'
+    SESSION_COOKIE_HTTPONLY = False
+
 db = getattr(pymongo.MongoClient(ConfigObj.MONGO_HOST, ConfigObj.MONGO_PORT),
         ConfigObj.MONGO_DB_NAME)
 fs = GridFS(db)

@@ -50,6 +50,26 @@
 <!-- The Javascript files -->
 <script src="../../static/js/jquery-1.9.1.min.js"></script>
 <script src="../../static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var flask_session_cookie_name = '{{ config.SESSION_COOKIE_NAME }}';
+
+    function getCookie(Name) 
+    { 
+        var search = Name + "=";
+        if(document.cookie.length > 0) 
+        { 
+            offset = document.cookie.indexOf(search);
+            if(offset != -1) 
+            { 
+                offset += search.length;
+                end = document.cookie.indexOf(";", offset);
+                if(end == -1) end = document.cookie.length;
+                return unescape(document.cookie.substring(offset, end));
+            } 
+            else return "";
+        } 
+    } 
+</script>
 {% block extraJS %}{% endblock %}
 </body>
 </html>
