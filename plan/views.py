@@ -56,9 +56,10 @@ def uploader():
     
     if request.method == 'POST':
         #因为uploadify 上传不能自动带cookie，see http://www.uploadify.com/documentation/uploadify/using-sessions-with-uploadify/
-        from prphoto import app
+        from flask import current_app as app
+        from flask import _request_ctx_stack
         request.cookies = {app.config['SESSION_COOKIE_NAME']: request.form.to_dict()['flask_session_cookie_name']}
-        session = app.session_interface.open_session(app, request)
+        _request_ctx_stack.top.session = app.open_session(request)
 
         file        = request.files['Filedata']
         suf_fix     = file.filename.rsplit('.', 1)[1].lower()
