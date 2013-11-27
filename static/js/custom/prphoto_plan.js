@@ -199,7 +199,6 @@ $(document).ready(function(){
             $(".modal").modal("show");
         },
         'onUploadSuccess' : function(file, data, response) {
-            alert('thumb path:' + data);
             $(".sample").append("<img src='/static/thum/" + data + "' />");
         }
 
