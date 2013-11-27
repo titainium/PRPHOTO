@@ -195,8 +195,8 @@ $(document).ready(function(){
         //上传数据中把cookie值也带上
         'formData'     : { flask_session_cookie_name : getCookie(flask_session_cookie_name)},
         'onUploadError' : function(file, errorCode, errorMsg, errorString) {
-            $(".modal-body").html('The file ' + file.name + ' could not be uploaded: ' + errorString);
-            $(".modal").modal("show");
+            $("#UploadErrModal .modal-body").html('The file ' + file.name + ' could not be uploaded: ' + errorString);
+            $("#UploadErrModal").modal("show");
         },
         'onUploadSuccess' : function(file, data, response) {
             $(".sample").append("<img src='/static/thum/" + data + "' />");
