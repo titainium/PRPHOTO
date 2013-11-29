@@ -65,7 +65,7 @@ class Profile(object):
         if username:
             query_dict.update({'username': username})
         if nick_name:
-            query_dict.update({'nick_name': username})
+            query_dict.update({'nick_name': nick_name})
 
         if not query_dict:
             pass
