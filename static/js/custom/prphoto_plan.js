@@ -199,6 +199,8 @@ $(document).ready(function(){
             $("#UploadErrModal").modal("show");
         },
         'onUploadSuccess' : function(file, data, response) {
+            paths = $("#hiddenPhotoInput").attr("value");
+            $("#hiddenPhotoInput").attr("value", paths + data + ";");
             $(".sample").append("<img src='/static/thum/" + data + "' />");
         }
 
