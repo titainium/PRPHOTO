@@ -40,6 +40,13 @@ from config import fs
 
 plan = Blueprint('plan', __name__, template_folder = 'templates')
 
+# 上传图片时用到的配置信息
+# 以后统一放到configs中去
+base_path      = '/tmp/prphoto/original'
+thum_base_path = '/tmp/prphoto/thum'
+allow_files    = ['gif', 'jpg', 'png']
+thumb_max_size = (250,250)
+
 @plan.route('/grid/<id>',methods=['GET'])
 def gridfile(id):
     oid = ObjectId(id)
@@ -48,10 +55,6 @@ def gridfile(id):
 
 @plan.route('/plan/uploader',methods=['POST','GET'])
 def uploader():
-    base_path      = '/tmp/prphoto/original'
-    thum_base_path = '/tmp/prphoto/thum'
-    allow_files    = ['gif', 'jpg', 'png']
-    thumb_max_size = (250,250)
     file        = request.files['Filedata']
     
     if request.method == 'POST':
@@ -123,23 +126,25 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
+    print 'data...',data
     user_id = ObjectId(session['user_id'])
     data = format_user_fields(data,user_id)
 
     # valid sample_images
-    sample_images = session.get('sample_images',',').split(',')
+    sample_images = data.get('photosPath').split(';')
     if len(sample_images) <1 or len(sample_images) >4:
         flash('需要1到4张样例图片')
         return render_template('plan_add.html',**data)
 
     # save pic
     samples = []
-    for path in sample_images:
-        if not path:continue
-        with open(path) as f:
+    for relative_path in sample_images:
+        if not relative_path:continue
+        tmp_file_path = os.path.join(base_path,relative_path)
+        with open(tmp_file_path) as f:
             # 存储图片文件到mongodb中，并返回一个oid
             # 将oid保存到samples字段中，以便显示
-            oid = fs.put(f,content_type="image/jpeg",filename=md5(path).hexdigest())
+            oid = fs.put(f,content_type="image/jpeg",filename=md5(tmp_file_path).hexdigest())
             samples.append(oid)
 
     validated,message = Plan.validate(data)
