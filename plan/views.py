@@ -126,12 +126,11 @@ def plan_add():
     
     # clear data
     data = request.form.to_dict()
-    print 'data...',data
     user_id = ObjectId(session['user_id'])
     data = format_user_fields(data,user_id)
 
     # valid sample_images
-    sample_images = data.get('photosPath').split(';')
+    sample_images = data.get('photosPath','').split(';')
     if len(sample_images) <1 or len(sample_images) >4:
         flash('需要1到4张样例图片')
         return render_template('plan_add.html',**data)
@@ -178,10 +177,30 @@ def plan_update(pid):
     data = request.form.to_dict()
     user_id = ObjectId(session['user_id'])
     data = format_user_fields(data,user_id)
+
+    # valid sample_images
+    sample_images = data.get('photosPath','').split(';')
+    if len(sample_images) <1 or len(sample_images) >4:
+        flash('需要1到4张样例图片')
+        return render_template('plan_update.html',**data)
+
+    # save pic
+    samples = plan['samples']
+    for relative_path in sample_images:
+        if not relative_path:continue
+        tmp_file_path = os.path.join(base_path,relative_path)
+        with open(tmp_file_path) as f:
+            # 存储图片文件到mongodb中，并返回一个oid
+            # 将oid保存到samples字段中，以便显示
+            oid = fs.put(f,content_type="image/jpeg",filename=md5(tmp_file_path).hexdigest())
+            samples.append(oid)
+
+
     validated,message = Plan.validate(data)
     if validated:
         # update recored
         cleared_data = Plan.clear_data(data)
+        cleared_data['samples'] = samples
         res  = Plan().save(pid,cleared_data)
         if res:
             return redirect('/plan/{}'.format(str(pid)))

@@ -35,6 +35,17 @@
 	<div class="controls"><input type="text" name="tags" id="tags" value="{{ plan['tags'] | to_string }}" /></div>
       </div>
     </div>
+      <div class="control-group">
+        <label class="control-label">Samples</label>
+        <div class="controls sample">
+            <input type="file" name="sample_upload" id="sample_upload" />
+        </div>
+      </div>
+
+    <div id="hiddenPhoto">
+        <input type="hidden" id="hiddenPhotoInput" name="photosPath" value="" />
+    </div>
+
     <button type="button" prev="title" next="member" value="next" class="btn">Next</button>
   </div>
   <div class="hero-unit" id="member">
@@ -157,4 +168,5 @@
 <script src="../../static/js/jquery.tagsinput.min.js"></script>
 <script src="../../static/js/jquery.marcopolo.min.js"></script>
 <script src="../../static/js/custom/prphoto_plan.js"></script>
+<script src="../../static/js/jquery.uploadify.min.js"></script>
 {% endblock %}
