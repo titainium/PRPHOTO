@@ -179,10 +179,11 @@ def plan_update(pid):
     data = format_user_fields(data,user_id)
 
     # valid sample_images
-    sample_images = data.get('photosPath','').split(';')
+    sample_images = plan['samples']
+    sample_images += data.get('photosPath','').split(';')
     if len(sample_images) <1 or len(sample_images) >4:
-        flash('需要1到4张样例图片')
-        return render_template('plan_update.html',**data)
+        flash(u'需要1到4张样例图片')
+        return render_template('plan_update.html',plan=plan)
 
     # save pic
     samples = plan['samples']
