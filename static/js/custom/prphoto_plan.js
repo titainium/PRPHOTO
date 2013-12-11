@@ -184,6 +184,8 @@ $(document).ready(function(){
         }
     });
 
+    $("#UploadErrModal").modal("hide");
+
     $("#sample_upload").uploadify({
         'fileSizeLimit': '4MB',
         'fileTypeDesc' : 'Image Files',

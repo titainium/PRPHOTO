@@ -36,6 +36,7 @@ from utils.const import PASSWORD_KEYWORD
 from utils.const import USER_KEY
 from utils.login import login_required
 from bson.objectid import ObjectId
+from bson.errors import InvalidId
 from config import fs
 
 plan = Blueprint('plan', __name__, template_folder = 'templates')
@@ -178,22 +179,31 @@ def plan_update(pid):
     user_id = ObjectId(session['user_id'])
     data = format_user_fields(data,user_id)
 
-    # valid sample_images
-    sample_images = plan['samples']
-    sample_images += data.get('photosPath','').split(';')
-    if len(sample_images) <1 or len(sample_images) >4:
+    samples = filter(lambda x:x, data.get('photosPath','').split(';'))
+    if len(samples) <1 or len(samples) >4:
         flash(u'需要1到4张样例图片')
         return render_template('plan_update.html',plan=plan)
 
     # save pic
-    samples = plan['samples']
-    for relative_path in sample_images:
-        if not relative_path:continue
+    for relative_path in samples:
+        try:
+            if fs.exists(_id = ObjectId(relative_path)):
+                samples.remove(relative_path)
+                samples.append(ObjectId(relative_path))
+                continue
+        except InvalidId:
+            pass
+
         tmp_file_path = os.path.join(base_path,relative_path)
+        if not os.path.isfile(tmp_file_path):
+            samples.remove(relative_path)
+            continue
+
         with open(tmp_file_path) as f:
             # 存储图片文件到mongodb中，并返回一个oid
             # 将oid保存到samples字段中，以便显示
             oid = fs.put(f,content_type="image/jpeg",filename=md5(tmp_file_path).hexdigest())
+            samples.remove(relative_path)
             samples.append(oid)
 
 
