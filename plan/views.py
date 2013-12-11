@@ -92,17 +92,17 @@ def uploader():
             try:
                 im = Image.open(full_path)
             except IOError,e:
-                return '0'
+                return '0', 400
             
             try:
                 im.thumbnail(thumb_max_size,Image.ANTIALIAS)
                 im.convert('RGB').save(thum_full_path,'jpeg',quality=100)
             except Exception,e:
-                return 'can not convert:{}'.format(e.message)
+                return 'can not convert:{}'.format(e.message), 400
             else:
                 return '{}/{}/{}/{}'.format(dir1,dir2,dir3,file_name)
 
-    return 'post required'
+    return 'post required', 400
 
 @plan.route('/plan',methods=['GET'])
 def plan_listing():
