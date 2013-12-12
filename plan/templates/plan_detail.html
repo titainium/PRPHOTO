@@ -25,15 +25,6 @@
   <div class="hero-unit">
       <span class="badge"><h2>Title</h2> </span>
 
-<div>
-    <!-- 调试时为了显示图片暂时放在这里,可以删除重写 -->
-    <b>Samples</b>
-    {% for oid in plan["samples"] %}
-        <img src="/grid/{{ oid }}">
-    {% endfor %}
-    xxx
-</div>
-
 
     <div class="well title-unit">
       <div class="control-group">
@@ -47,8 +38,18 @@
             <span class="label tags">{{ tag }}</span>&nbsp;
             {% endfor %}
         </div>
-      </div>
     </div>
+    <div class="control-group">
+        <label class="control-label"><h3>Samples</h3></label>
+        <div class="controls sample-photo">
+            <ul>
+            {% for oid in plan["samples"] %}
+                <li class="pic"><img src="/grid/{{ oid }}"></li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+  </div>
     <br /><br />
     <span class="badge"><h2>Members</h2></span>
     <div class="well members-unit">
