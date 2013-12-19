@@ -184,25 +184,15 @@ def plan_update(pid):
         flash(u'需要1到4张样例图片')
         return render_template('plan_update.html',plan=plan)
 
-    print 'sample images',sample_images
 
     # save pic
-<<<<<<< HEAD
-    samples = plan['samples']
-    for relative_path in sample_images:
-        if not relative_path:continue
-        if type(relative_path) is ObjectId:continue
-=======
     for relative_path in samples:
-        try:
-            if fs.exists(_id = ObjectId(relative_path)):
-                samples.remove(relative_path)
-                samples.append(ObjectId(relative_path))
-                continue
-        except InvalidId:
-            pass
-
->>>>>>> 6e8d458194d85da35f0b7ae3da7db097a5681374
+        # 如果relative_path是一个objectid,说明是已经上传过的旧图片
+        # 这里直接跳过不处理
+        if type(relative_path) is ObjectId:continue
+        
+        # 如果relative_path 是一个文件系统的相对路径
+        # 则将文件读取写入mongdb，并将得到的oid放入plan['samples']中
         tmp_file_path = os.path.join(base_path,relative_path)
         if not os.path.isfile(tmp_file_path):
             samples.remove(relative_path)
@@ -215,7 +205,7 @@ def plan_update(pid):
             samples.remove(relative_path)
             samples.append(oid)
 
-
+    
     validated,message = Plan.validate(data)
     if validated:
         # update recored
