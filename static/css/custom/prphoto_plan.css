@@ -121,3 +121,7 @@ ol.mp_list li.mp_min_chars {
 ol.mp_list li.mp_error {
 
 }
+
+.sample-photo .pic {
+    position: relative;
+}

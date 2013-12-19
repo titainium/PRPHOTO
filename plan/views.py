@@ -36,6 +36,7 @@ from utils.const import PASSWORD_KEYWORD
 from utils.const import USER_KEY
 from utils.login import login_required
 from bson.objectid import ObjectId
+from bson.errors import InvalidId
 from config import fs
 
 plan = Blueprint('plan', __name__, template_folder = 'templates')
@@ -92,17 +93,17 @@ def uploader():
             try:
                 im = Image.open(full_path)
             except IOError,e:
-                return '0'
+                return '0', 400
             
             try:
                 im.thumbnail(thumb_max_size,Image.ANTIALIAS)
                 im.convert('RGB').save(thum_full_path,'jpeg',quality=100)
             except Exception,e:
-                return 'can not convert:{}'.format(e.message)
+                return 'can not convert:{}'.format(e.message), 400
             else:
                 return '{}/{}/{}/{}'.format(dir1,dir2,dir3,file_name)
 
-    return 'post required'
+    return 'post required', 400
 
 @plan.route('/plan',methods=['GET'])
 def plan_listing():
@@ -178,25 +179,40 @@ def plan_update(pid):
     user_id = ObjectId(session['user_id'])
     data = format_user_fields(data,user_id)
 
-    # valid sample_images
-    sample_images = plan['samples']
-    sample_images += data.get('photosPath','').split(';')
-    if len(sample_images) <1 or len(sample_images) >4:
+    samples = filter(lambda x:x, data.get('photosPath','').split(';'))
+    if len(samples) <1 or len(samples) >4:
         flash(u'需要1到4张样例图片')
         return render_template('plan_update.html',plan=plan)
 
     print 'sample images',sample_images
 
     # save pic
+<<<<<<< HEAD
     samples = plan['samples']
     for relative_path in sample_images:
         if not relative_path:continue
         if type(relative_path) is ObjectId:continue
+=======
+    for relative_path in samples:
+        try:
+            if fs.exists(_id = ObjectId(relative_path)):
+                samples.remove(relative_path)
+                samples.append(ObjectId(relative_path))
+                continue
+        except InvalidId:
+            pass
+
+>>>>>>> 6e8d458194d85da35f0b7ae3da7db097a5681374
         tmp_file_path = os.path.join(base_path,relative_path)
+        if not os.path.isfile(tmp_file_path):
+            samples.remove(relative_path)
+            continue
+
         with open(tmp_file_path) as f:
             # 存储图片文件到mongodb中，并返回一个oid
             # 将oid保存到samples字段中，以便显示
             oid = fs.put(f,content_type="image/jpeg",filename=md5(tmp_file_path).hexdigest())
+            samples.remove(relative_path)
             samples.append(oid)
 
 

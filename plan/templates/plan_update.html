@@ -1,6 +1,7 @@
 {% extends "plan_base.html" %}
 {% block extraCSS %}
 <link rel=stylesheet type=text/css href="../../static/css/jquery.tagsinput.css">
+<link rel=stylesheet type=text/css href="../../static/css/uploadify.css">
 <link rel=stylesheet type=text/css href="../../static/css/custom/prphoto_plan.css">
 {% endblock %}
 {% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
@@ -43,7 +44,7 @@
       </div>
 
     <div id="hiddenPhoto">
-        <input type="hidden" id="hiddenPhotoInput" name="photosPath" value="" />
+        <input type="hidden" id="hiddenPhotoInput" name="photosPath" value="{% for s in plan['samples'] %}{{ s }};{% endfor %}" />
     </div>
 
     <button type="button" prev="title" next="member" value="next" class="btn">Next</button>
