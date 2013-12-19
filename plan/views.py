@@ -185,10 +185,13 @@ def plan_update(pid):
         flash(u'需要1到4张样例图片')
         return render_template('plan_update.html',plan=plan)
 
+    print 'sample images',sample_images
+
     # save pic
     samples = plan['samples']
     for relative_path in sample_images:
         if not relative_path:continue
+        if type(relative_path) is ObjectId:continue
         tmp_file_path = os.path.join(base_path,relative_path)
         with open(tmp_file_path) as f:
             # 存储图片文件到mongodb中，并返回一个oid
