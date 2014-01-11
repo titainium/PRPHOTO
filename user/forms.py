@@ -4,8 +4,8 @@
 import re
 
 from flask.ext.wtf import Form
-from flask.ext.wtf import Required
-from flask.ext.wtf import TextField
+from wtforms.validators import Required
+from wtforms import TextField
 
 from widgets import LoginPwdField
 from widgets import LoginUserField

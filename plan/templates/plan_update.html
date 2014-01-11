@@ -38,11 +38,17 @@
     </div>
       <div class="control-group">
         <label class="control-label">Samples</label>
+        <div class="controls sample-photo">
+            <ul>
+            {% for oid in plan["samples"] %}
+                <li class="pic"><img src="/grid/{{ oid }}"></li>
+            {% endfor %}
+            </ul>
+        </div>
         <div class="controls sample">
             <input type="file" name="sample_upload" id="sample_upload" />
         </div>
       </div>
-
     <div id="hiddenPhoto">
         <input type="hidden" id="hiddenPhotoInput" name="photosPath" value="{% for s in plan['samples'] %}{{ s }};{% endfor %}" />
     </div>

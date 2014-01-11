@@ -52,6 +52,7 @@ thumb_max_size = (250,250)
 def gridfile(id):
     oid = ObjectId(id)
     content = fs.get(oid).read()
+
     return content
 
 @plan.route('/plan/uploader',methods=['POST','GET'])
@@ -83,7 +84,7 @@ def uploader():
             file.save(full_path)
 
             # mark
-            session['sample_images'] += '{},'.format(full_path)
+            #session['sample_images'] += '{},'.format(full_path)
             
             # save thumb
             file_path   = os.path.join(thum_base_path,dir1,dir2,dir3)
@@ -122,7 +123,7 @@ def format_user_fields(data,user_id):
 @login_required
 def plan_add():
     if request.method == 'GET':
-        session['sample_images'] = ''
+        #session['sample_images'] = ''
         return render_template('plan_add.html',**locals())
     
     # clear data
@@ -179,14 +180,15 @@ def plan_update(pid):
     user_id = ObjectId(session['user_id'])
     data = format_user_fields(data,user_id)
 
-    samples = filter(lambda x:x, data.get('photosPath','').split(';'))
-    if len(samples) <1 or len(samples) >4:
+    sample_images = filter(lambda x:x, data.get('photosPath','').split(';'))
+    if len(sample_images) <1 or len(sample_images) >4:
         flash(u'需要1到4张样例图片')
         return render_template('plan_update.html',plan=plan)
 
 
     # save pic
-    for relative_path in samples:
+    samples = []
+    for relative_path in sample_images:
         # 如果relative_path是一个objectid,说明是已经上传过的旧图片
         # 这里直接跳过不处理
         if type(relative_path) is ObjectId:continue
@@ -195,14 +197,14 @@ def plan_update(pid):
         # 则将文件读取写入mongdb，并将得到的oid放入plan['samples']中
         tmp_file_path = os.path.join(base_path,relative_path)
         if not os.path.isfile(tmp_file_path):
-            samples.remove(relative_path)
+            #samples.remove(relative_path)
             continue
 
         with open(tmp_file_path) as f:
             # 存储图片文件到mongodb中，并返回一个oid
             # 将oid保存到samples字段中，以便显示
             oid = fs.put(f,content_type="image/jpeg",filename=md5(tmp_file_path).hexdigest())
-            samples.remove(relative_path)
+            #samples.remove(relative_path)
             samples.append(oid)
 
     
