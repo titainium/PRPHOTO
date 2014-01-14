@@ -26,7 +26,7 @@ def plan_weight(plan_type):
     '''
     classes         = 'non-business' #now 4 clases: non-business, business, donate, advertisement
     plan_weight_mapper = {
-        'genera': .1,
+        'general': .1,
         'non-business': .2,
         'business': .15,
         'donate': .15,
