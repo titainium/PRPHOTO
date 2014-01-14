@@ -29,7 +29,7 @@ def plan_weight(plan_type):
         'genera': .1,
         'non-business': .2,
         'business': .15,
-        'donate': .2,
+        'donate': .15,
         'advertisement': .2,
     }
 
