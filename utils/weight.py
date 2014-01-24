@@ -1,8 +1,8 @@
 # coding=utf8
 #!/usr/bin/env python
+from .const import DEFAULT_ACCURACY
 
-
-__all__ = ['album_weight', plan_weight]
+__all__ = ['album_weight', 'plan_weight']
 
 
 def album_weight(album_p_count, total_p_count):
@@ -12,10 +12,7 @@ def album_weight(album_p_count, total_p_count):
 
     @return album_p_count/total_p_count
     '''
-
-    default_accuracy = 10000.
-
-    return int((album_p_count/(total_p_count * 1.)*default_accuracy)) / default_accuracy
+    return int((album_p_count/(total_p_count * 1.)* DEFAULT_ACCURACY)) / DEFAULT_ACCURACY
 
 
 def plan_weight(plan_type):

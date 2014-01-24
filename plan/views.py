@@ -35,6 +35,7 @@ from user.models import User
 from utils.const import PASSWORD_KEYWORD
 from utils.const import USER_KEY
 from utils.login import login_required
+from utils.weight import *
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
 from config import fs
@@ -108,6 +109,7 @@ def uploader():
 
 @plan.route('/plan',methods=['GET'])
 def plan_listing():
+    ad_plans = Plan.get_ad_plans()
     return render_template('plan_index.html')
 
 def format_user_fields(data,user_id):
