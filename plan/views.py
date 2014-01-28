@@ -155,7 +155,14 @@ def plan_add():
         new_id = ObjectId()
         cleared_data = Plan.clear_data(data)
         cleared_data['samples'] = samples
-        res  = Plan().save(new_id,cleared_data)
+        cleared_data['starts_at'] = datetime.now()
+        cleared_data['ends_at'] = ''
+        cleared_data['location'] = ''
+        cleared_data['is_public'] = True
+        cleared_data['classes'] = 'general'
+        cleared_data['weight'] = .1
+        res = Plan().save(new_id,cleared_data)
+        
         if res:
             return redirect('/plan/{}'.format(str(new_id)))
         return str(res)
@@ -215,7 +222,8 @@ def plan_update(pid):
         # update recored
         cleared_data = Plan.clear_data(data)
         cleared_data['samples'] = samples
-        res  = Plan().save(pid,cleared_data)
+        cleared_data['weight'] = plan_weight(plan['classes'])
+        res = Plan().save(pid,cleared_data)
         if res:
             return redirect('/plan/{}'.format(str(pid)))
         return str(res)

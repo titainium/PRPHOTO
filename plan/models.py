@@ -27,7 +27,7 @@ class Plan(object):
     is_public       = True
     status          = 'New' #total 4 status: New, Process, Done, Dropped
     classes         = 'general' #now 5 clases: general, non-business, business, donate, advertisement
-    weight          = ''
+    weight          = .1
 
     def __init__(self):
         pass
@@ -147,7 +147,7 @@ class Plan(object):
 
     @staticmethod
     def get_ad_plans():
-        return mongo.db.plan.find().sort({starts_at: 1}).limit(5)
+        return mongo.db.plan.find().sort({weight: 1}).limit(5)
 
     def get_plans_by_public(self, is_public=True):
         '''
