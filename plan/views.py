@@ -107,9 +107,16 @@ def uploader():
 
     return 'post required', 400
 
-@plan.route('/plan',methods=['GET'])
+@plan.route('/plan/',methods=['GET'])
 def plan_listing():
     ad_plans = Plan.get_ad_plans()
+    init_plans = Plan.get_init_plans(ObjectId(session['user_id']))
+    master_plans = Plan.get_master_plans(ObjectId(session['user_id']))
+    member_plans = Plan.get_member_plans(ObjectId(session['user_id']))
+    user_plans = list(set(init_plans) | set(master_plans) | set(member_plans))
+    
+    print 
+    
     return render_template('plan_index.html')
 
 def format_user_fields(data,user_id):

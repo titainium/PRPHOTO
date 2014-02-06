@@ -70,7 +70,7 @@ def login():
 	      
 	      flash("Logged in!")
 	      
-	      return redirect(request.args.get("next") or '/myprofile')
+	      return redirect(request.args.get("next") or '/plan/')
 	  else:
 	      flash("Sorry, but you could not log in.")
       
