@@ -147,19 +147,19 @@ class Plan(object):
 
     @staticmethod
     def get_ad_plans():
-        return mongo.db.plan.find().sort({'weight': 1}).limit(5)
+        return mongo.db.plan.find().sort("wight", 1).limit(5)
     
     @staticmethod
     def get_init_plans(user_id):
-        return mongo.db.plan.find({initiators._id: user_id})
+        return mongo.db.plan.find({'initiators._id': user_id})
     
     @staticmethod
     def get_master_plans(user_id):
-        return mongo.db.plan.find({masters._id: user_id})
+        return mongo.db.plan.find({'masters._id': user_id})
     
     @staticmethod
     def get_member_plans(user_id):
-        return mongo.db.plan.find({members._id: user_id})
+        return mongo.db.plan.find({'members._id': user_id})
 
     def get_plans_by_public(self, is_public=True):
         '''
