@@ -10,6 +10,9 @@ class ConfigObj(object):
     UPLOAD_FOLDER = '/tmp/prphoto/media' and DEBUG or '/var/prphoto/media'
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
+    #PostgreSQL config
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost/prphoto'
+    
     #MongoDB address
     MONGO_HOST = '127.0.0.1'
     MONGO_PORT = 27017

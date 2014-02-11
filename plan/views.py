@@ -110,12 +110,17 @@ def uploader():
 @plan.route('/plan/',methods=['GET'])
 def plan_listing():
     ad_plans = Plan.get_ad_plans()
-    init_plans = Plan.get_init_plans(ObjectId(session['user_id']))
-    master_plans = Plan.get_master_plans(ObjectId(session['user_id']))
-    member_plans = Plan.get_member_plans(ObjectId(session['user_id']))
+    user_plans = []
+    for init_plan in Plan.get_init_plans(ObjectId(session['user_id'])):
+        if init_plan not in user_plans:
+            user_plans.append(init_plan)
+    for master_plan in Plan.get_master_plans(ObjectId(session['user_id'])):
+        #if master_plan not in 
+        master_plans.append(master_plan)
+    for member_plan in Plan.get_member_plans(ObjectId(session['user_id'])):
+        member_plans.append(member_plan)
+    print '*' * 20, '\n', type(init_plans)
     user_plans = list(set(init_plans) | set(master_plans) | set(member_plans))
-    
-    print 
     
     return render_template('plan_index.html')
 

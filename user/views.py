@@ -20,6 +20,7 @@ from .forms import LoginForm
 from .forms import RegisterForm
 from .models import User
 
+from prphoto import db
 from utils.login import login_required
 
 user = Blueprint('user', __name__, template_folder = 'templates')
@@ -43,8 +44,9 @@ def register():
                 flash("The email address has registered.")
             else:
                 user = User(form.user_name.data, form.password.data)
-                
-                user.save()
+                db.session.add(user)
+                db.session.commit()
+                #user.save()
                 flash("Thank you for your registration! Please log in.")
                 
                 return redirect('/')
@@ -53,11 +55,11 @@ def register():
     except:
         traceback.print_exc()
 
-@user.route('/login', methods = ['GET', 'POST'])
+"""@user.route('/login', methods = ['GET', 'POST'])
 def login():
-    """
+    ""
     login method, add user_id into session.
-    """
+    ""
     try:
       form = LoginForm()
     
@@ -85,4 +87,4 @@ def logout():
     session.pop('user_id', None)
     flash("Logged out.")
     
-    return redirect(url_for(".index"))
+    return redirect(url_for(".index"))"""
