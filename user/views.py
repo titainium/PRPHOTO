@@ -16,11 +16,13 @@ from flask import url_for
 from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
+from prphoto import bcrypt
+from prphoto import db
+
 from .forms import LoginForm
 from .forms import RegisterForm
 from .models import User
 
-from prphoto import db
 from utils.login import login_required
 
 user = Blueprint('user', __name__, template_folder = 'templates')
@@ -40,13 +42,15 @@ def register():
         form = RegisterForm()
     
         if request.method == 'POST' and form.validate():
-            if User.search_by_name({"username": form.user_name.data}):
+            exist_user = User.search_by_name(form.user_name.data)
+            
+            if exist_user and exist_user[0]:
                 flash("The email address has registered.")
             else:
-                user = User(form.user_name.data, form.password.data)
+                user = User(form.user_name.data, bcrypt.generate_password_hash(form.password.data))
+                
                 db.session.add(user)
                 db.session.commit()
-                #user.save()
                 flash("Thank you for your registration! Please log in.")
                 
                 return redirect('/')

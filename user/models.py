@@ -1,7 +1,6 @@
 # coding=utf-8
 #!/usr/bin/env python
 
-from prphoto import bcrypt
 from prphoto import db
 from prphoto import mongo
 
@@ -18,6 +17,10 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+    
+    @classmethod
+    def search_by_name(cls, name):
+        return db.session.query(cls).filter(cls.username == name).all()
 
 """class User(object):
     name     = ""
