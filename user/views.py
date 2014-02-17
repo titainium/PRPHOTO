@@ -14,18 +14,26 @@ from flask import session
 from flask import url_for
 
 from flask.ext.babel import gettext as _
+from flask.ext.login import login_user
+from flask.ext.login import login_required
+from flask.ext.login import logout_user
 from jinja2 import TemplateNotFound
 
 from prphoto import bcrypt
 from prphoto import db
+from prphoto import login_manager
 
 from .forms import LoginForm
 from .forms import RegisterForm
 from .models import User
 
-from utils.login import login_required
+#from utils.login import login_required
 
 user = Blueprint('user', __name__, template_folder = 'templates')
+
+@login_manager.user_loader
+def load_user(userid):
+    return User.get_user_by_id(userid)
 
 @user.route('/')
 def index():
@@ -59,36 +67,32 @@ def register():
     except:
         traceback.print_exc()
 
-"""@user.route('/login', methods = ['GET', 'POST'])
+@user.route('/login', methods = ['GET', 'POST'])
 def login():
-    ""
+    """
     login method, add user_id into session.
-    ""
+    """
     try:
-      form = LoginForm()
-    
-      if request.method == 'POST' and form.validate():
-	  if User.check_user(form.user_name.data, form.password.data):
-	      user = User(form.user_name.data, form.password.data)
-	      #g.user = user
-	      #print '*' * 20, '\n', user.get_user_id(), '\t', str(user.get_user_id())
-	      session['user_id'] = str(user.get_user_id())
-	      
-	      flash("Logged in!")
-	      
-	      return redirect(request.args.get("next") or '/plan/')
-	  else:
-	      flash("Sorry, but you could not log in.")
-      
-      return render_template('user_index.html', form = form)
+        form = LoginForm()
+        
+        if request.method == 'POST' and form.validate():
+            exist_user = User.search_by_name(form.user_name.data)
+            
+            if exist_user and exist_user[0] and bcrypt.check_password_hash(exist_user[0].password, form.password.data):
+                login_user(exist_user[0])
+                flash("Logged in!")
+            
+                return redirect(request.args.get("next") or '/myprofile/')
+            else:
+                flash("Sorry, but you could not log in.")
+        return render_template('user_index.html', form = form)
     except:
-      traceback.print_exc()
+        traceback.print_exc()
 
-@user.route("/logout")
+@user.route("/logout/")
 @login_required
 def logout():
-    #g.user = None
-    session.pop('user_id', None)
+    logout_user()
     flash("Logged out.")
     
-    return redirect(url_for(".index"))"""
+    return redirect(url_for(".index"))

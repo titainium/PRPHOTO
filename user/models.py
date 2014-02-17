@@ -10,6 +10,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(120), unique=True)
+    is_active = db.Column(db.Boolean, default=True)
 
     def __init__(self, username, password):
         self.username = username
@@ -18,9 +19,19 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
     
+    def is_active(self):
+        return True if self.is_active == True else False
+    
+    def is_authenticated(self):
+        return True
+    
     @classmethod
     def search_by_name(cls, name):
         return db.session.query(cls).filter(cls.username == name).all()
+    
+    @classmethod
+    def get_user_by_id(cls, user_id):
+        return db.session.query(cls).get(id)
 
 """class User(object):
     name     = ""

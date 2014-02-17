@@ -26,7 +26,7 @@ from utils.login import login_required
 
 profile = Blueprint('profile', __name__, template_folder = 'templates')
 
-@profile.route('/myprofile')
+@profile.route('/myprofile/')
 @login_required
 def my_profile():
     try:

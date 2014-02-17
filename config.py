@@ -9,6 +9,8 @@ class ConfigObj(object):
     SECRET_KEY = 'FORM_SECRET'
     UPLOAD_FOLDER = '/tmp/prphoto/media' and DEBUG or '/var/prphoto/media'
     ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+    CSRF_ENABLED = True
+    CSRF_SESSION_KEY = "somethingimpossibletoguess"
 
     #PostgreSQL config
     SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost/prphoto'
