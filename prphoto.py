@@ -10,7 +10,6 @@ from flask import Flask
 from flask import send_from_directory
 from flask.ext.babel import Babel
 from flask.ext.bcrypt import Bcrypt
-from flask.ext.login import LoginManager
 from flask.ext.pymongo import PyMongo
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -25,10 +24,6 @@ babel = Babel(app)
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 mongo = PyMongo(app)
-
-login_manager = LoginManager()
-
-login_manager.init_app(app)
 
 #add customized jinja filters
 cust_filters = {name: function
