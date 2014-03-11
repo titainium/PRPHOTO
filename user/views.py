@@ -41,6 +41,8 @@ def index():
 
 @user.route('/register', methods = ['GET', 'POST'])
 def register():
+    db.session.begin(subtransactions = True)
+    
     try:
         form = RegisterForm()
     
@@ -60,6 +62,7 @@ def register():
 
         return render_template('user_register.html', form = form)
     except:
+        db.session.rollback()
         traceback.print_exc()
 
 @user.route('/login', methods = ['GET', 'POST'])

@@ -1,8 +1,8 @@
 $(document).ready(function(){
     $("#btn_nickname").delegate("#edit_nickname", "click", function(){
       var cell = $("#btn_nickname").parents('tr').children('td');
-      var nick_name = cell.eq(1).text();
-      cell.eq(1).html("<input type='text' id='nick_name' class='span2' name='nick_name' value='" + nick_name + "' />");
+      var nickname = cell.eq(1).text();
+      cell.eq(1).html("<input type='text' id='nickname' class='span2' name='nickname' value='" + nickname + "' />");
       cell.eq(2).html("&nbsp;&nbsp;&nbsp;<a href='#' id='submit_nickname'>save</a>");
     });
     
@@ -10,7 +10,7 @@ $(document).ready(function(){
       var cell = $("#btn_nickname").parents('tr').children('td');
       
       $.post("/update_profile",
-             {nick_name: $("#nick_name").val()},
+             {nickname: $("#nickname").val()},
              function(data) {
                cell.eq(1).html(data);
                cell.eq(2).html("&nbsp;&nbsp;&nbsp;<a href='#' id='edit_nickname'>edit</a>");

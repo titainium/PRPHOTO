@@ -22,7 +22,7 @@
       <table>
         <tr id="tr_nickname">
           <td><span class="label">Nick Name</span>&nbsp;&nbsp;</td>
-          <td class="profile_info">{{ nick_name }}</td>
+          <td class="profile_info">{{ nickname }}</td>
           <td id="btn_nickname">
             &nbsp;&nbsp;
             <a href="#" id="edit_nickname">edit</a>
@@ -30,12 +30,12 @@
         </tr>
         <tr>
           <td><span class="label">Email</span>&nbsp;&nbsp;</td>
-          <td class="profile_info">{{ user['username'] }}</td>
+          <td class="profile_info">{{ user.username }}</td>
           <td>&nbsp;&nbsp;</td>
         </tr>
         <tr>
           <td><span class="label">Password</span>&nbsp;&nbsp;</td>
-          <td class="profile_info">{{ user['password'] | password }}</td>
+          <td class="profile_info">{{ user.password | password }}</td>
           <td id="btn_password">
             &nbsp;&nbsp;
             <a href="#" id="edit_password">edit</a>

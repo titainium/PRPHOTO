@@ -14,9 +14,11 @@ from flask import request
 from flask import session
 from flask import url_for
 
-from bson import ObjectId
 from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
+
+from prphoto import bcrypt
+from prphoto import db
 
 from .models import Profile
 from user.models import User
@@ -30,18 +32,19 @@ profile = Blueprint('profile', __name__, template_folder = 'templates')
 @login_required
 def my_profile():
     try:
-        user = User.get_user_by_id(ObjectId(session['user_id']))
+        profile = Profile.get_by_userid(session['user_id'])
+        user = User.get_user_by_id(session['user_id'])
         
-        if user.has_key(USER_KEY):
-	  nick_name = user[USER_KEY]['nick_name']
-	  location = user[USER_KEY].get('location','unknow')
-	else:
-	  nick_name = ''
-	  location = ''
+        if profile and profile[0]:
+            nickname = profile[0].nickname
+            location = profile[0].location
+        else:
+	        nickname = ''
+	        location = ''
         
         return render_template('profile_index.html',
                                user = user,
-                               nick_name = nick_name,
+                               nickname = nickname,
                                location = location
                                )
     except:
@@ -52,19 +55,39 @@ def update_profile():
     """
     Update the user profile and return the updated value
     """
+    db.session.begin(subtransactions = True)
+    
     try:
-        update_keys = ['nick_name',
+        update_keys = ['nickname',
                        'location',
                        ]
         back_val = ''
+        profile = Profile.get_by_userid(session['user_id'])
         
         for key in update_keys:
-            if request.form.has_key(key):
-                back_val = Profile.update_profile(session['user_id'], **{key: request.form.getlist(key)[0]})
-                back_val = request.form.getlist(key)[0]
-        
+            if request.form.has_key(key) and len(profile) > 0:
+                setattr(profile[0], key, request.form.getlist(key)[0])
+                db.session.add(profile[0])
+                db.session.commit()
+                
+                back_val = getattr(profile[0], key)
+                break
+            elif request.form.has_key(key) and len(profile) == 0:
+                print 'x' * 20, '\n', key
+                profile = Profile()
+                user = User.get_user_by_id(session['user_id'])
+                profile.user = user
+                
+                setattr(profile, key, request.form.getlist(key)[0])
+                db.session.add(profile)
+                db.session.commit()
+                
+                back_val = getattr(profile, key)
+                break
+                
         return back_val
     except:
+        db.session.rollback()
         traceback.print_exc()
 
 @profile.route('/update_user', methods=['POST'])
@@ -72,15 +95,20 @@ def update_user():
     """
     Update the user's password
     """
+    db.session.begin(subtransaction = True)
+    
     try:
         back_val = {}
         if request.form.has_key(PASSWORD_KEYWORD):
-            back_val = User.update_user_password(user_id = ObjectId(session['user_id']), password = request.form.getlist(PASSWORD_KEYWORD)[0])
-        
-        if back_val and not back_val['err']:
-            return_val = request.form.getlist(PASSWORD_KEYWORD)[0]
-        
+            user = User.get_user_by_id(session['user_id'])
+            user.password = bcrypt.generate_password_hash(request.form.getlist(PASSWORD_KEYWORD)[0])
+            
+            db.session.add(user)
+            db.session.commit()
+            
+            back_val = request.form.getlist(PASSWORD_KEYWORD)[0]
         
         return len(return_val) * '*'
     except:
+        db.session.rollback()
         traceback.print_exc()

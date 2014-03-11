@@ -1,13 +1,39 @@
 # coding=utf-8
 #!/usr/bin/env python
 
+from prphoto import db
 from prphoto import mongo
 
 from bson import ObjectId   # for the user's id is ObjectId
 
+from user.models import User
+
 __all__ = ['Profile']
 
-class Profile(object):
+class Profile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nickname = db.Column(db.String(80), unique=True)
+    location = db.Column(db.String(120), unique=True)
+    
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relation('User', backref = db.backref('profile', lazy = 'dynamic'))
+
+    def __init__(self, nickname = None, location = None):
+        self.nickname = nickname
+        self.location = location
+
+    def __repr__(self):
+        return '<Profile %r>' % self.nickname
+    
+    @classmethod
+    def get_by_userid(cls, user_id):
+        return db.session.query(cls).filter(cls.user_id == user_id).all()
+    
+    """@classmethod
+    def search_by_name(cls, name):
+       return db.session.query(cls).filter(cls.username == name).all()"""
+
+"""class Profile(object):
     ''' user's profile infomation.  '''
     nick_name        = ""
     location         = ""
@@ -124,4 +150,4 @@ class Profile(object):
         if query_dict:
             return list(mongo.db.users.find(query_dict))
         else:
-            return []
+            return []"""
