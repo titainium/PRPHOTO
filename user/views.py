@@ -14,9 +14,6 @@ from flask import session
 from flask import url_for
 
 from flask.ext.babel import gettext as _
-from flask.ext.login import login_user
-from flask.ext.login import login_required
-from flask.ext.login import logout_user
 from jinja2 import TemplateNotFound
 
 from prphoto import bcrypt
