@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding=utf8
 
-from prphoto import mongo
-from bson import ObjectId
+#from prphoto import mongo
+#from bson import ObjectId
 from datetime import datetime
 
 
