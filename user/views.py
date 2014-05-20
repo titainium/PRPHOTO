@@ -3,61 +3,48 @@
 
 import traceback
 
-from flask import Blueprint
 from flask import abort
-from flask import flash
+from flask import Blueprint
 from flask import g
-from flask import redirect
-from flask import render_template
-from flask import request
+from flask import jsonify
 from flask import session
-from flask import url_for
-
-from flask.ext.babel import gettext as _
-from jinja2 import TemplateNotFound
 
 from prphoto import bcrypt
 from prphoto import db
 
-from .forms import LoginForm
-from .forms import RegisterForm
 from .models import User
 
 from utils.login import login_required
 
 user = Blueprint('user', __name__, template_folder = 'templates')
 
-@user.route('/')
+@user.route('/', methods = ['GET'])
 def index():
-    try:
-        form = LoginForm()
-        
-        return render_template('user_index.html', form = form)
-    except TemplateNotFound:
-        traceback.print_exc()
+    return jsonify({})
 
-@user.route('/register', methods = ['GET', 'POST'])
+@user.route('/register', methods = ['GET'])
 def register():
+    return jsonify({})
+
+@user.route('/register', methods = ['POST'])
+def save_register():
     db.session.begin(subtransactions = True)
     
+    if not request.json or not 'username' in request.json:
+        abort(400)
+        
     try:
-        form = RegisterForm()
-    
-        if request.method == 'POST' and form.validate():
-            exist_user = User.search_by_name(form.user_name.data)
+        exist_user = User.search_by_name(request.json['username'])
+        
+        if exist_user and exist_user[0]:
+            return jsonify({'error_message': 'The username has registerd.'})
+        else:
+            user = User(request.json['username'], bcrypt.generate_password_hash(request.json['password']))
             
-            if exist_user and exist_user[0]:
-                flash("The email address has registered.")
-            else:
-                user = User(form.user_name.data, bcrypt.generate_password_hash(form.password.data))
-                
-                db.session.add(user)
-                db.session.commit()
-                flash("Thank you for your registration! Please log in.")
-                
-                return redirect('/')
-
-        return render_template('user_register.html', form = form)
+            db.session.add(user)
+            db.session.commit()
+            
+            return jsonify({'ok_message': 'User registered success.'})
     except:
         db.session.rollback()
         traceback.print_exc()
@@ -68,26 +55,26 @@ def login():
     login method, add user_id into session.
     """
     try:
-        form = LoginForm()
+        if request.method == 'GET':
+            return jsonify({})
+    
+        if request.method == 'POST':
+            exist_user = User.search_by_name(request.json['username'])
         
-        if request.method == 'POST' and form.validate():
-            exist_user = User.search_by_name(form.user_name.data)
-            
-            if exist_user and exist_user[0] and bcrypt.check_password_hash(exist_user[0].password, form.password.data):
+            if exist_user and exist_user[0] and bcrypt.check_password_hash(exist_user[0].password, request.json['password']):
                 session['user_id'] = exist_user[0].id
-                flash("Logged in!")
             
-                return redirect(request.args.get("next") or '/')
+                return jsonify({'ok_message': 'Login success!'})
             else:
-                flash("Sorry, but you could not log in.")
-        return render_template('user_index.html', form = form)
+                return jsonify({'error_message': "Sorry, but you could not log in."})
     except:
         traceback.print_exc()
 
-@user.route("/logout/")
+@user.route("/logout", methods=['GET'])
 @login_required
 def logout():
+    """
+    logout method, remove the user_id out of session.
+    """
     session.pop('user_id', None)
-    flash("Logged out.")
-    
-    return redirect(url_for(".index"))
+    return jsonify({})

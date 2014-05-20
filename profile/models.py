@@ -2,9 +2,6 @@
 #!/usr/bin/env python
 
 from prphoto import db
-from prphoto import mongo
-
-from bson import ObjectId   # for the user's id is ObjectId
 
 from user.models import User
 

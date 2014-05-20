@@ -1,7 +1,5 @@
 #coding=utf-8
 #!/usr/bin/env python
-import pymongo
-from gridfs import GridFS
 
 class ConfigObj(object):
     BABEL_DEFAULT_LOCALE = 'en'
@@ -24,8 +22,4 @@ class ConfigObj(object):
     SESSION_COOKIE_NAME = 'prphoto_session'
     SESSION_COOKIE_PATH = '/'
     SESSION_COOKIE_HTTPONLY = False
-
-db = getattr(pymongo.MongoClient(ConfigObj.MONGO_HOST, ConfigObj.MONGO_PORT),
-        ConfigObj.MONGO_DB_NAME)
-fs = GridFS(db)
 

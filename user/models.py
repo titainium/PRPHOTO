@@ -1,20 +1,25 @@
 # coding=utf-8
 #!/usr/bin/env python
 
+from flask.ext.login import UserMixin
+
 from prphoto import db
 
 __all__ = ['User']
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
-    password = db.Column(db.String(120), unique=True)
-    is_active = db.Column(db.Boolean, default=True)
+    password = db.Column(db.String(256), unique=True)
+    active = db.Column(db.Boolean, default=True)
 
     def __init__(self, username, password):
         self.username = username
         self.password = password
 
+    def is_active(self):
+        return self.active
+        
     def __repr__(self):
         return '<User %r>' % self.username
     

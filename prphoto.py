@@ -8,9 +8,7 @@ import os
 
 from flask import Flask
 from flask import send_from_directory
-from flask.ext.babel import Babel
 from flask.ext.bcrypt import Bcrypt
-from flask.ext.pymongo import PyMongo
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from utils import filters
@@ -19,11 +17,8 @@ import config
 
 app = Flask(__name__)
 app.config.from_object('config.ConfigObj')
-
-babel = Babel(app)
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
-mongo = PyMongo(app)
 
 #add customized jinja filters
 cust_filters = {name: function

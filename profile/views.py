@@ -14,7 +14,6 @@ from flask import request
 from flask import session
 from flask import url_for
 
-from flask.ext.babel import gettext as _
 from jinja2 import TemplateNotFound
 
 from prphoto import bcrypt
