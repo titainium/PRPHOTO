@@ -1,13 +1,11 @@
 # coding=utf-8
 #!/usr/bin/env python
 
-from flask.ext.login import UserMixin
-
 from prphoto import db
 
 __all__ = ['User']
 
-class User(db.Model, UserMixin):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(256), unique=True)

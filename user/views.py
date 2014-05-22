@@ -49,24 +49,20 @@ def save_register():
         db.session.rollback()
         traceback.print_exc()
 
-@user.route('/login', methods = ['GET', 'POST'])
+@user.route('/login', methods = ['POST'])
 def login():
     """
     login method, add user_id into session.
     """
     try:
-        if request.method == 'GET':
-            return jsonify({})
-    
-        if request.method == 'POST':
-            exist_user = User.search_by_name(request.json['username'])
+        exist_user = User.search_by_name(request.json['username'])
         
-            if exist_user and exist_user[0] and bcrypt.check_password_hash(exist_user[0].password, request.json['password']):
-                session['user_id'] = exist_user[0].id
+        if exist_user and exist_user[0] and bcrypt.check_password_hash(exist_user[0].password, request.json['password']):
+            session['user_id'] = exist_user[0].id
             
-                return jsonify({'ok_message': 'Login success!'})
-            else:
-                return jsonify({'error_message': "Sorry, but you could not log in."})
+            return jsonify({'ok_message': 'Login success!'})
+        else:
+            return jsonify({'error_message': "Sorry, but you could not log in."})
     except:
         traceback.print_exc()
 
