@@ -1,5 +1,5 @@
 #coding=utf-8
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from inspect import getmembers
 from inspect import isfunction
@@ -12,6 +12,7 @@ from flask.ext.bcrypt import Bcrypt
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from utils import filters
+from utils.const import HOST, PORT
 
 import config
 
@@ -36,12 +37,12 @@ def favicon():
 if __name__ == '__main__':
     def register_blueprints(app):
         from user.views import user
-        from profile.views import profile
-        from plan.views import plan
+        #from profile.views import profile
+        #from plan.views import plan
     
         app.register_blueprint(user)
-        app.register_blueprint(profile)
-        app.register_blueprint(plan)
+        #app.register_blueprint(profile)
+        #app.register_blueprint(plan)
 
     register_blueprints(app)
-    app.run(host='localhost',port=8002)
+    app.run(host = HOST, port = PORT)

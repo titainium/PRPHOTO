@@ -1,0 +1,23 @@
+{% extends "user_base.html" %}
+{% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
+{% block menu %}
+<div class="navbar-collapse collapse">
+  <form class="navbar-form navbar-right" role="form" method="POST" action="/login/">
+    {{ login_form.hidden_tag() }}
+    <div class="form-group">
+      {{ login_form.username }}
+    </div>
+    <div class="form-group">
+      {{ login_form.password }}
+    </div>
+    <button type="submit" class="btn btn-success">Sign in</button>
+  </form>
+</div><!--/.navbar-collapse -->
+{% endblock %}
+{% block timeline %}
+<img id="background" src="{{config.STATIC_PATH}}img/bg.jpg" style="visibility: hidden" />
+{% endblock %}
+{% block extraJS %}
+<script src="{{config.STATIC_PATH}}js/jquery.fullBG.min.js"></script>
+<script src="{{config.STATIC_PATH}}js/custom/prphoto_fullbg.js"></script>
+{% endblock %}

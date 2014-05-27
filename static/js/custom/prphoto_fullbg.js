@@ -1,3 +1,3 @@
 $(window).load(function() {
-	$("#background").fullBg();
+	$("#background").fullBG();
 });
