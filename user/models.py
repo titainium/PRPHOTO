@@ -23,7 +23,7 @@ class User(db.Model):
     
     @classmethod
     def search_by_name(cls, name):
-        return db.session.query(cls).filter(cls.username == name).all()
+        return db.session.query(cls).filter(cls.username == name).first()
     
     @classmethod
     def get_user_by_id(cls, user_id):

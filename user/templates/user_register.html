@@ -1,0 +1,21 @@
+{% extends "user_base.html" %}
+{% block extraCSS %}
+<link rel=stylesheet type=text/css href="{{config.STATIC_PATH}}css/custom/prphoto_register.css">
+{% endblock %}
+{% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
+{% block timeline %}
+<div class="container">
+
+      <form class="form-signin" role="form">
+        <h2 class="form-signin-heading">Welcome join us</h2>
+        <label form="username">User Name</label>
+        <input class="form-control" placeholder="Email address" required="" autofocus="" type="email">
+        <label form="password">Password</label>
+        <input class="form-control" placeholder="Password" required="" type="password">
+        <label form="confirmPassword">Confirm Password</label>
+        <input class="form-control" placeholder="Password" required="" type="password">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
+      </form>
+
+    </div> <!-- /container -->
+{% endblock %}

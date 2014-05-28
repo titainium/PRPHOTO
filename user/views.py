@@ -27,9 +27,9 @@ def index():
     login_form = LoginForm()
     return render_template('user_index.html', login_form = login_form)
 
-@user.route('/register', methods = ['GET'])
+@user.route('/register/', methods = ['GET'])
 def register():
-    return jsonify({})
+    return render_template('user_register.html')
 
 @user.route('/register', methods = ['POST'])
 def save_register():
@@ -54,24 +54,28 @@ def save_register():
         db.session.rollback()
         traceback.print_exc()
 
-@user.route('/login', methods = ['POST'])
+@user.route('/login/', methods = ['POST'])
 def login():
     """
     login method, add user_id into session.
     """
     try:
-        exist_user = User.search_by_name(request.json['username'])
+        login_form = LoginForm()
         
-        if exist_user.count() > 0 and bcrypt.check_password_hash(exist_user[0].password, request.json['password']):
-            session['user_id'] = exist_user[0].id
+        if login_form.validate_on_submit():
+            exist_user = User.search_by_name(login_form.username.data)
+        
+            if exist_user is not None and bcrypt.check_password_hash(exist_user.password, login_form.password.data):
+                session['user_id'] = exist_user.id
             
-            return jsonify({'ok_message': 'Login success!'})
-        else:
-            return jsonify({'error_message': "Sorry, but you could not log in."})
+                return redirect("/")
+        
+        flash("Please check the username and password, and login again!")
+        return redirect("/")
     except:
         traceback.print_exc()
 
-@user.route("/logout", methods=['GET'])
+@user.route("/logout/", methods=['GET'])
 @login_required
 def logout():
     """

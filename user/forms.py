@@ -10,6 +10,7 @@ from wtforms.validators import Email
 from wtforms.validators import length
 
 from .widgets import PREmailInput
+from .widgets import PRPasswordInput
 
 __all__ = ['LoginForm']
 
@@ -22,5 +23,8 @@ class LoginForm(Form):
                           widget = PREmailInput()
                           )
     password = PasswordField(label = 'password',
-                             validators = [DataRequired()]
+                             validators = [DataRequired(),
+                                           length(max = 256),
+                                           ],
+                             widget = PRPasswordInput()
                              )

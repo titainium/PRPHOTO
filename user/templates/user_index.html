@@ -1,7 +1,13 @@
 {% extends "user_base.html" %}
+{% block extraCSS %}
+<link rel=stylesheet type=text/css href="{{config.STATIC_PATH}}css/custom/prphoto_user.css">
+{% endblock %}
 {% block adWord %}<a class="brand" href="/">KACHA</a>{% endblock %}
-{% block menu %}
+{% block loginForm %}
 <div class="navbar-collapse collapse">
+  <ul class="nav navbar-nav navbar-right">
+    <li><a class="brand" href="/register/">Register</a></li>
+  </ul>
   <form class="navbar-form navbar-right" role="form" method="POST" action="/login/">
     {{ login_form.hidden_tag() }}
     <div class="form-group">
