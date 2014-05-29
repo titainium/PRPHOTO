@@ -25,13 +25,14 @@ user = Blueprint('user', __name__, template_folder = 'templates')
 @user.route('/', methods = ['GET'])
 def index():
     login_form = LoginForm()
-    return render_template('user_index.html', login_form = login_form)
+    register_form = LoginForm()
+    
+    return render_template('user_index.html',
+                            login_form = login_form,
+                            register_form = register_form
+                            )
 
-@user.route('/register/', methods = ['GET'])
-def register():
-    return render_template('user_register.html')
-
-@user.route('/register', methods = ['POST'])
+@user.route('/register/', methods = ['POST'])
 def save_register():
     db.session.begin(subtransactions = True)
     

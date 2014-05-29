@@ -1,5 +1,11 @@
 $(document).ready(function(){
-    $(".form-signin").validate({
+  $(".frm-register").hide();
+  
+  $(".btn-register").click(function(){
+    $(".frm-register").toggle();
+  });
+  
+    /*$(".form-signin").validate({
         description: {
             email: {
                 required: '<div class="alert alert-error">The email address format is not correct</div>'
@@ -9,5 +15,5 @@ $(document).ready(function(){
                 required: '<div class="alert alert-error">The password is mandatory, the password can be characters, numbers and symbols.</div>'
             }
         }
-    });
+    });*/
 });
