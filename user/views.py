@@ -35,22 +35,28 @@ def index():
 @user.route('/register/', methods = ['POST'])
 def save_register():
     db.session.begin(subtransactions = True)
-    
-    if not request.json or not 'username' in request.json:
-        abort(400)
         
     try:
-        exist_user = User.search_by_name(request.json['username'])
+        register_form = LoginForm()
         
-        if exist_user.count() > 0:
-            return jsonify({'error_message': 'The username has registerd.'})
+        if register_form.validate_on_submit():
+          exist_user = User.search_by_name(register_form.username.data)
+        
+        if exist_user:
+            flash('The email address has been used, please change another one.')
+            
+            return redirect('/')
         else:
-            user = User(request.json['username'], bcrypt.generate_password_hash(request.json['password']))
+            user = User(register_form.username.data,
+                        bcrypt.generate_password_hash(register_form.password.data)
+                        )
             
             db.session.add(user)
             db.session.commit()
             
-            return jsonify({'ok_message': 'User registered success.'})
+            flash('User registered success, thank you!')
+            
+            return redirect('/')
     except:
         db.session.rollback()
         traceback.print_exc()
@@ -66,13 +72,17 @@ def login():
         if login_form.validate_on_submit():
             exist_user = User.search_by_name(login_form.username.data)
         
-            if exist_user is not None and bcrypt.check_password_hash(exist_user.password, login_form.password.data):
+            if exist_user is not None and bcrypt.check_password_hash(exist_user.password,
+                                                                      login_form.password.data):
                 session['user_id'] = exist_user.id
             
                 return redirect("/")
         
         flash("Please check the username and password, and login again!")
-        return redirect("/")
+        return render_template('user_index.html',
+                                login_form = login_form,
+                                register_form = LoginForm()
+                                )
     except:
         traceback.print_exc()
 
@@ -83,4 +93,4 @@ def logout():
     logout method, remove the user_id out of session.
     """
     session.pop('user_id', None)
-    return jsonify({})
+    return redirect('/')

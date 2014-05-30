@@ -21,6 +21,22 @@
 {% endblock %}
 {% block timeline %}
 <img id="background" src="{{config.STATIC_PATH}}img/bg.jpg" style="visibility: hidden" />
+<div class="container">
+  <div class="alert-messages alert">
+    <a class="close" data-dismiss="alert" href="#">×</a>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul class="flashes">
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  </div>
+</div>
+{% endblock %}
+{% block extraInfo %}
 {% include 'user_register.html' %}
 {% endblock %}
 {% block extraJS %}

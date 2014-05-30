@@ -10,6 +10,11 @@
 	z-index: -1;
 }
 
+.alert-messages {
+    padding: 40px 15px;
+    text-align: center;
+}
+
 a:active {
   color: #FFFFFF;
   text-decoration: none;
