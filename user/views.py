@@ -42,7 +42,7 @@ def save_register():
         if register_form.validate_on_submit():
           exist_user = User.search_by_name(register_form.username.data)
         
-        if exist_user:
+          if exist_user:
             flash('The email address has been used, please change another one.')
             
             return redirect('/')
@@ -77,6 +77,12 @@ def login():
                 session['user_id'] = exist_user.id
             
                 return redirect("/")
+            else:
+                flash("Please check the username and password, and login again!")
+                return render_template('user_index.html',
+                                login_form = login_form,
+                                register_form = LoginForm()
+                                )
         
         flash("Please check the username and password, and login again!")
         return render_template('user_index.html',

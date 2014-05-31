@@ -21,20 +21,24 @@
 {% endblock %}
 {% block timeline %}
 <img id="background" src="{{config.STATIC_PATH}}img/bg.jpg" style="visibility: hidden" />
-<div class="container">
-  <div class="alert-messages alert">
-    <a class="close" data-dismiss="alert" href="#">×</a>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <ul class="flashes">
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>
+{% endif %}
+{% endwith %}
 {% endblock %}
 {% block extraInfo %}
 {% include 'user_register.html' %}

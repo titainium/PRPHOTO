@@ -12,6 +12,7 @@ class ConfigObj(object):
 
     #PostgreSQL config
     SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost/prphoto'
+    SQLALCHEMY_ECHO = True
     
     # static path
     STATIC_PATH = '../../static/'
