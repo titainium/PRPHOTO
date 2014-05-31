@@ -34,29 +34,27 @@ def index():
 
 @user.route('/register/', methods = ['POST'])
 def save_register():
-    db.session.begin(subtransactions = True)
-        
     try:
         register_form = LoginForm()
         
         if register_form.validate_on_submit():
-          exist_user = User.search_by_name(register_form.username.data)
+            exist_user = User.search_by_name(register_form.username.data)
         
-          if exist_user:
-            flash('The email address has been used, please change another one.')
+            if exist_user:
+                flash('The email address has been used, please change another one.')
+                
+                return redirect('/')
+            else:
+                user = User(register_form.username.data,
+                            bcrypt.generate_password_hash(register_form.password.data)
+                            )
             
-            return redirect('/')
-        else:
-            user = User(register_form.username.data,
-                        bcrypt.generate_password_hash(register_form.password.data)
-                        )
+                db.session.add(user)
+                db.session.commit()
             
-            db.session.add(user)
-            db.session.commit()
+                flash('User registered success, thank you!')
             
-            flash('User registered success, thank you!')
-            
-            return redirect('/')
+                return redirect('/')
     except:
         db.session.rollback()
         traceback.print_exc()
@@ -72,17 +70,11 @@ def login():
         if login_form.validate_on_submit():
             exist_user = User.search_by_name(login_form.username.data)
         
-            if exist_user is not None and bcrypt.check_password_hash(exist_user.password,
-                                                                      login_form.password.data):
+            if exist_user and bcrypt.check_password_hash(exist_user.password,
+                                                          login_form.password.data):
                 session['user_id'] = exist_user.id
             
                 return redirect("/")
-            else:
-                flash("Please check the username and password, and login again!")
-                return render_template('user_index.html',
-                                login_form = login_form,
-                                register_form = LoginForm()
-                                )
         
         flash("Please check the username and password, and login again!")
         return render_template('user_index.html',
