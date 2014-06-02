@@ -19,7 +19,6 @@ from jinja2 import TemplateNotFound
 from prphoto import bcrypt
 from prphoto import db
 
-from .models import Profile
 from user.models import User
 from utils.const import PASSWORD_KEYWORD
 from utils.const import USER_KEY
@@ -30,30 +29,24 @@ profile = Blueprint('profile', __name__, template_folder = 'templates')
 @profile.route('/myprofile/')
 @login_required
 def my_profile():
+    """
+    View the user profile
+    """
+    
     try:
-        profile = Profile.get_by_userid(session['user_id'])
         user = User.get_user_by_id(session['user_id'])
-        
-        if profile and profile[0]:
-            nickname = profile[0].nickname
-            location = profile[0].location
-        else:
-	        nickname = ''
-	        location = ''
         
         return render_template('profile_index.html',
                                user = user,
-                               nickname = nickname,
-                               location = location
                                )
     except:
         traceback.print_exc()
 
-@profile.route('/update_profile', methods=['POST'])
+"""@profile.route('/update_profile', methods=['POST'])
 def update_profile():
-    """
-    Update the user profile and return the updated value
-    """
+    
+    #Update the user profile and return the updated value
+    
     db.session.begin(subtransactions = True)
     
     try:
@@ -91,9 +84,9 @@ def update_profile():
 
 @profile.route('/update_user', methods=['POST'])
 def update_user():
-    """
-    Update the user's password
-    """
+    
+    #Update the user's password
+    
     db.session.begin(subtransaction = True)
     
     try:
@@ -110,4 +103,4 @@ def update_user():
         return len(return_val) * '*'
     except:
         db.session.rollback()
-        traceback.print_exc()
+        traceback.print_exc()"""

@@ -11,6 +11,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(256), unique=True)
+    nickname = db.Column(db.String(80))
+    location = db.Column(db.String(80))
+    about_me = db.Column(db.String(1024))
     active = db.Column(db.Boolean, default=True)
 
     def __init__(self, username, password):

@@ -37,11 +37,11 @@ def favicon():
 if __name__ == '__main__':
     def register_blueprints(app):
         from user.views import user
-        #from profile.views import profile
+        from profile.views import profile
         #from plan.views import plan
     
         app.register_blueprint(user)
-        #app.register_blueprint(profile)
+        app.register_blueprint(profile)
         #app.register_blueprint(plan)
 
     register_blueprints(app)

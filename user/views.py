@@ -74,7 +74,7 @@ def login():
                                                           login_form.password.data):
                 session['user_id'] = exist_user.id
             
-                return redirect("/")
+                return redirect("/myprofile/")
         
         flash("Please check the username and password, and login again!")
         return render_template('user_index.html',
