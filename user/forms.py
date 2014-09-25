@@ -20,11 +20,11 @@ class LoginForm(Form):
                                         Email(),
                                         length(max = 80)
                                         ],
-                          widget = PREmailInput()
+                         widget = PREmailInput()
                           )
     password = PasswordField(label = 'password',
                              validators = [DataRequired(),
                                            length(max = 256),
                                            ],
-                             widget = PRPasswordInput()
+                            widget = PRPasswordInput()
                              )

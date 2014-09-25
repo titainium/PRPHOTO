@@ -11,7 +11,7 @@ class ConfigObj(object):
     WTF_CSRF_SECRET_KEY = 'FORM_SECRET'
 
     #PostgreSQL config
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost/prphoto'
+    #SQLALCHEMY_DATABASE_URI = 'postgres://jzp:123456@localhost/mydb'
     SQLALCHEMY_ECHO = True
     
     # static path
